@@ -31,9 +31,16 @@ namespace BPCalculator
         {
             get
             {
-                // implement as part of project
-                //throw new NotImplementedException("not implemented yet");
-                return new BPCategory();                       // replace this
+                if(this.Systolic < 90 && this.Diastolic < 60){
+                  return BPCategory.Low;
+                }
+                if(this.Systolic < 120 && this.Diastolic < 80){
+                  return BPCategory.Ideal;
+                }
+                 if(this.Systolic < 140 && this.Diastolic < 90){
+                  return BPCategory.PreHigh;
+                }
+                return BPCategory.High;
             }
         }
     }

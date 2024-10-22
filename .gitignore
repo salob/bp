@@ -6,7 +6,6 @@
 *.user
 *.userosscache
 *.sln.docstates
-*.sln
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
@@ -262,3 +261,4 @@ __pycache__/
 
 # MacOS
 .DS_Store
+BPCalculator.sln

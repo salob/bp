@@ -31,13 +31,9 @@ jobs:
         path: '**.trx'
         reporter: 'dotnet-trx'
 
-    - name: Copy coverage results
-      run: |
-        mkdir -p coverage-results
-        cp -R $(find . -name "coverage.cobertura.xml") coverage-results/
     - name: Publish coverage results
       uses: actions/upload-artifact@v4
       with:
         name: coverage-report
-        path: coverage-results/
+        path: ./BPCalculatorTest/TestResults/**/coverage.cobertura.xml
         

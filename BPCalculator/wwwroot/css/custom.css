@@ -1,0 +1,9 @@
+.tip-text {
+  font-style: italic !important;
+  color: #04AA6D !important;
+}
+
+.btn {
+  background-color: #ddd !important;
+  border-color: black;
+}

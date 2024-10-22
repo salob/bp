@@ -1,0 +1,32 @@
+name: Continuous Integration Build for BP calculator ASP.Net Core app
+
+env:
+  DOTNET_VERSION: '8.0.x'
+
+on:
+  push:
+    branches: [ "main","sian/add-logic" ]
+  workflow_dispatch:
+
+jobs:
+  ci-build:
+    permissions: write-all
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+    - name: Build for Release
+      run: dotnet build --configuration Release
+    - name: Run unit tests
+      run: dotnet test BPCalculatorTest/BPCalculatorTest.csproj --no-restore --collect "Code coverage" -l:trx
+   
+    - name: Publish Unit Test Results
+      uses: dorny/test-reporter@v1
+      with:
+        artifact: ''
+        name: MS Tests
+        path: '**.trx'
+        reporter: 'dotnet-trx'

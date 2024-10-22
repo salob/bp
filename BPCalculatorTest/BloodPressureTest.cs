@@ -1,6 +1,7 @@
 namespace BPCalculatorTest;
 using BPCalculator;
-
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.ComponentModel.DataAnnotations;
 [TestClass]
 public class BloodPressureTest
 {
@@ -14,16 +15,51 @@ public class BloodPressureTest
     BloodPressure bp = new BloodPressure() { Systolic = sc, Diastolic = ds };
     Assert.AreEqual(bp.Category.Item1, cat);
   }
-/** Work in Progress
+  
   [TestMethod]
-  public void TestExceptions()
+  [ExpectedException(typeof(ValidationException))]
+  public void Diastolic_AboveMax()
   {
-    BloodPressure bp = new BloodPressure();
-    bp.Systolic = 59;
-    bp.Diastolic = 55;
-    Console.WriteLine(bp.Category.Item1);
-    Assert.AreEqual(bp.Category.Item1,BPCategory.High);
+      var bp = new BloodPressure();
+      bp.Diastolic = 101; // invalid
+      bp.Systolic = 120; // valid
+      ValidateInstance(bp);
   }
-**/
+
+  [TestMethod]
+  [ExpectedException(typeof(ValidationException))]
+  public void Diastolic_BelowMin()
+  {
+      var bp = new BloodPressure();
+      bp.Diastolic = 39; // invalid
+      bp.Systolic = 120; // valid
+      ValidateInstance(bp);
+  }
+
+  [TestMethod]
+  [ExpectedException(typeof(ValidationException))]
+  public void Systolic_AboveMax()
+  {
+      var bp = new BloodPressure();
+      bp.Diastolic = 80; // valid
+      bp.Systolic = 191; // invalid
+      ValidateInstance(bp);
+  }
+
+  [TestMethod]
+  [ExpectedException(typeof(ValidationException))]
+  public void Systolic_BelowMin()
+  {
+      var bp = new BloodPressure();
+      bp.Diastolic = 80; // valid
+      bp.Systolic = 69; // invalid
+      ValidateInstance(bp);
+  }
+  private void ValidateInstance(BloodPressure bloodPressure)
+  {
+      var context = new ValidationContext(bloodPressure);
+      Validator.ValidateObject(bloodPressure, context, true);
+  }
+
 }
 

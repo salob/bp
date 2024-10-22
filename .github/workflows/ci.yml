@@ -32,9 +32,9 @@ jobs:
         reporter: 'dotnet-trx'
 
     - name: Install ReportGenerator
-     run: dotnet tool install --global dotnet-reportgenerator-globaltool
-     env:
-      DOTNET_TOOL_ROOT: $HOME/.dotnet/tools
+      run: dotnet tool install --global dotnet-reportgenerator-globaltool
+      env:
+       DOTNET_TOOL_ROOT: $HOME/.dotnet/tools
 
     - name: Publish code coverage results
       uses: actions/upload-artifact@v4

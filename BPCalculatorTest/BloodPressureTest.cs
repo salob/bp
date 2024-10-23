@@ -16,49 +16,64 @@ public class BloodPressureTest
     Assert.AreEqual(bp.Category.Item1, cat);
   }
   
-  [TestMethod]
-  [ExpectedException(typeof(ValidationException))]
-  public void Diastolic_AboveMax()
+  [DataTestMethod]
+  [DataRow("High")]
+  [DataRow("PreHigh")]
+  [DataRow("Ideal")]
+  [DataRow("Low")]
+  public void TestValidTip(int sc, int ds, string catString)
   {
-      var bp = new BloodPressure();
-      bp.Diastolic = 101; // invalid
-      bp.Systolic = 120; // valid
-      ValidateInstance(bp);
+    //just need this instance in order to call non static methods
+    BloodPressure bp = new BloodPressure();
+    List<string> tipsForCategory = bp.GetTips(catString);
+    string tip = bp.GetRandomTip(catString);
+    bool isCorrectTip = tipsForCategory.Contains(tip);
+    Assert.AreEqual(isCorrectTip,true);
   }
 
   [TestMethod]
   [ExpectedException(typeof(ValidationException))]
-  public void Diastolic_BelowMin()
+  public void TestDiastolic_AboveMax()
   {
-      var bp = new BloodPressure();
-      bp.Diastolic = 39; // invalid
-      bp.Systolic = 120; // valid
-      ValidateInstance(bp);
+    BloodPressure bp = new BloodPressure();
+    bp.Diastolic = 101; // invalid
+    bp.Systolic = 120; // valid
+    ValidateInstance(bp);
   }
 
   [TestMethod]
   [ExpectedException(typeof(ValidationException))]
-  public void Systolic_AboveMax()
+  public void TestDiastolic_BelowMin()
   {
-      var bp = new BloodPressure();
-      bp.Diastolic = 80; // valid
-      bp.Systolic = 191; // invalid
-      ValidateInstance(bp);
+    BloodPressure bp = new BloodPressure();
+    bp.Diastolic = 39; // invalid
+    bp.Systolic = 120; // valid
+    ValidateInstance(bp);
   }
 
   [TestMethod]
   [ExpectedException(typeof(ValidationException))]
-  public void Systolic_BelowMin()
+  public void TestSystolic_AboveMax()
   {
-      var bp = new BloodPressure();
-      bp.Diastolic = 80; // valid
-      bp.Systolic = 69; // invalid
-      ValidateInstance(bp);
+    BloodPressure bp = new BloodPressure();
+    bp.Diastolic = 80; // valid
+    bp.Systolic = 191; // invalid
+    ValidateInstance(bp);
+  }
+
+  [TestMethod]
+  [ExpectedException(typeof(ValidationException))]
+  public void TestSystolic_BelowMin()
+  {
+    BloodPressure bp = new BloodPressure();
+    bp.Diastolic = 80; // valid
+    bp.Systolic = 69; // invalid
+    ValidateInstance(bp);
   }
   private void ValidateInstance(BloodPressure bloodPressure)
   {
-      var context = new ValidationContext(bloodPressure);
-      Validator.ValidateObject(bloodPressure, context, true);
+    ValidationContext context = new ValidationContext(bloodPressure);
+    Validator.ValidateObject(bloodPressure, context, true);
   }
 
 }

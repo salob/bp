@@ -21,12 +21,16 @@ public class BloodPressureTest
   [DataRow("PreHigh")]
   [DataRow("Ideal")]
   [DataRow("Low")]
-  public void TestValidTip(int sc, int ds, string catString)
+  public void TestValidTip(string catString)
   {
     //just need this instance in order to call non static methods
     BloodPressure bp = new BloodPressure();
     List<string> tipsForCategory = bp.GetTips(catString);
     string tip = bp.GetRandomTip(catString);
+    /** Debug print statements
+    Console.WriteLine(tip);
+    Console.Write(String.Join("\n",tipsForCategory));
+    **/
     bool isCorrectTip = tipsForCategory.Contains(tip);
     Assert.AreEqual(isCorrectTip,true);
   }

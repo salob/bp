@@ -36,13 +36,7 @@ jobs:
       env:
        DOTNET_TOOL_ROOT: $HOME/.dotnet/tools
 
-    - name: Publish code coverage results
-      uses: actions/upload-artifact@v4
-      with:
-        name: coverage-report
-        path: ./BPCalculatorTest/TestResults/**/coverage.cobertura.xml
-
-    - name: Generate HTML Report
+    - name: Generate HTML Code Test Coverage Report
       run: |
         reportgenerator -reports:./BPCalculatorTest/TestResults/**/coverage.cobertura.xml -targetdir:coverage-report -reporttypes:Html
 

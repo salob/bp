@@ -5,6 +5,16 @@
     ViewData["Title"] = "BP Category Calculator";
 }
 
+@{
+  string bpCategoryClass = Model.BP.Category.Item1 switch
+  { 
+    BPCategory.High => "high",
+    BPCategory.PreHigh => "preHigh",
+    BPCategory.Ideal => "ideal",
+    BPCategory.Low => "low",
+    _ => "from-group" // default
+  };
+}
 
 <h4>BP Category Calculator</h4>
 <hr />
@@ -27,7 +37,7 @@
             </div>
             @if (ViewData.ModelState.IsValid)
             {
-                <div class="form-group">
+                <div class="@bpCategoryClass">
                     @Html.DisplayFor(model => model.BP.Category.Item1, new { htmlAttributes = new { @class = "form-control" } })
                 </div>
                 <div class="tip-text">

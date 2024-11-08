@@ -48,13 +48,13 @@ jobs:
         path: coverage-report/
 
     - name: dotnet publish
-      run: dotnet publish -c Release -o $GITHUB_WORKSPACE/myapp
+      run: cd BPCalculator && dotnet publish -c Release --property:PublishDir=../myapp
 
     - name: Upload artifact for deployment job
       uses: actions/upload-artifact@v3
       with:
         name: .net-app
-        path: $GITHUB_WORKSPACE/myapp
+        path: ./myapp
   
   cd:
     permissions:

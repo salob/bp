@@ -58,6 +58,5 @@ jobs:
           /d:sonar.cs.opencover.reportsPaths="coverage/lcov.info"
           
         dotnet build
-        
         dotnet-sonarscanner end \
-          /d:sonar.login="${
+          /d:sonar.login="${{ secrets.SONAR_TOKEN }}"

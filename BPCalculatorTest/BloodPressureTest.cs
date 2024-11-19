@@ -40,24 +40,20 @@ public class BloodPressureTest
   public void TestValidData(int sc, int ds, BPCategory cat)
   {
     BloodPressure bp = new BloodPressure() { Systolic = sc, Diastolic = ds };
-    Assert.AreEqual(bp.Category.Item1, cat);
+    Assert.AreEqual(bp.Category, cat);
   }
   
   [DataTestMethod]
-  [DataRow("High")]
-  [DataRow("PreHigh")]
-  [DataRow("Ideal")]
-  [DataRow("Low")]
-  public void TestValidTip(string catString)
+  [DataRow(150, 90, BPCategory.High)]
+  [DataRow(120, 80, BPCategory.PreHigh)]
+  [DataRow(119, 79, BPCategory.Ideal)]
+  [DataRow(80, 40, BPCategory.Low)]
+
+  public void TestValidTip(int sc, int ds, BPCategory cat)
   {
-    //just need this instance in order to call non static methods
-    BloodPressure bp = new BloodPressure();
-    List<string> tipsForCategory = bp.GetTips(catString);
-    string tip = bp.GetRandomTip(catString);
-    /** Debug print statements
-    Console.WriteLine(tip);
-    Console.Write(String.Join("\n",tipsForCategory));
-    **/
+    BloodPressure bp = new BloodPressure() { Systolic = sc, Diastolic = ds };
+    List<string> tipsForCategory = TipRepository.Tips[cat];
+    string tip = bp.Tip;
     bool isCorrectTip = tipsForCategory.Contains(tip);
     Assert.AreEqual(isCorrectTip,true);
   }

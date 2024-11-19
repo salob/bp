@@ -6,7 +6,7 @@
 }
 
 @{
-  string bpCategoryClass = Model.BP.Category.Item1 switch
+  string bpCategoryClass = Model.BP.Category switch
   { 
     BPCategory.High => "high",
     BPCategory.PreHigh => "preHigh",
@@ -38,10 +38,10 @@
             @if (ViewData.ModelState.IsValid)
             {
                 <div class="@bpCategoryClass">
-                    @Html.DisplayFor(model => model.BP.Category.Item1, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.DisplayFor(model => model.BP.Category, new { htmlAttributes = new { @class = "form-control" } })
                 </div>
                 <div class="tip-text">
-                    @Html.DisplayFor(model => model.BP.Category.Item2, new { htmlAttributes = new { @class = "tip-text" } })
+                    @Html.DisplayFor(model => model.BP.Tip, new { htmlAttributes = new { @class = "tip-text" } })
                 </div>                
             }
         </form>

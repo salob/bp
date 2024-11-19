@@ -6,7 +6,7 @@ env:
   AZURE_WEBAPP_PACKAGE_PATH: '.'
 on:
   push:
-    branches: [ "main","sian/tidy-up" ]
+    branches: [ "main","sian/sonar" ]
   workflow_dispatch:
 
 jobs:
@@ -19,11 +19,18 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    # build the project
     - name: Build for Release
       run: dotnet build --configuration Release
+
+    # run standard unit tests
     - name: Run unit tests
-      run: dotnet test BPCalculatorTest/BPCalculatorTest.csproj --no-restore --configuration Release --collect:"XPlat Code Coverage" --collect "Code coverage" -l:trx
-   
+      #run: dotnet test BPCalculatorTest/BPCalculatorTest.csproj --no-restore --configuration Release --collect:"XPlat Code Coverage" --collect "Code coverage" -l:trx
+      #run: dotnet test BPCalculatorTest/BPCalculatorTest.csproj --no-restore --configuration Release -p:CollectCoverage=true -p:CoverletOutput=TestResults/ -p:CoverletOutputFormat=opencover
+      run:  dotnet test BPCalculatorTest/BPCalculatorTest.csproj --no-restore --configuration Release --collect:"XPlat Code Coverage;Format=opencover" --collect "Code coverage" -l:trx
+
+    # publish unit test results to github
     - name: Publish Unit Test Results
       uses: dorny/test-reporter@v1
       with:
@@ -31,22 +38,39 @@ jobs:
         name: MS Tests
         path: '**.trx'
         reporter: 'dotnet-trx'
+    
+    # # code coverage
+    # - name: Install ReportGenerator
+    #   run: dotnet tool install --global dotnet-reportgenerator-globaltool
+    #   env:
+    #    DOTNET_TOOL_ROOT: $HOME/.dotnet/tools
 
-    - name: Install ReportGenerator
-      run: dotnet tool install --global dotnet-reportgenerator-globaltool
-      env:
-       DOTNET_TOOL_ROOT: $HOME/.dotnet/tools
+    # - name: Generate HTML Code Test Coverage Report
+    #   run: |
+    #     reportgenerator -reports:./BPCalculatorTest/TestResults/**/coverage.cobertura.xml -targetdir:coverage-report -reporttypes:Html
 
-    - name: Generate HTML Code Test Coverage Report
-      run: |
-        reportgenerator -reports:./BPCalculatorTest/TestResults/**/coverage.cobertura.xml -targetdir:coverage-report -reporttypes:Html
+    # - name: Upload coverage report
+    #   uses: actions/upload-artifact@v4
+    #   with:
+    #     name: coverage-report
+    #     path: coverage-report/
 
-    - name: Upload coverage report
-      uses: actions/upload-artifact@v4
+    # run sonar cloud analyis (report in https://sonarcloud.io/project/information?id=gclynch_bankCI2022)
+    # define SONAR_TOKEN secret to match project token
+    - name: Analyze code with SonarCloud
+      uses: sonarsource/sonarcloud-github-action@master
       with:
-        name: coverage-report
-        path: coverage-report/
+        args: >
+          -Dsonar.organization=salob
+          -Dsonar.projectKey=salob_bp
+          -Dsonar.sources=BPCalculator/
+          -Dsonar.cs.opencover.reportsPaths=BPCalculatorTest/TestResults/**/coverage.opencover.xml
+          -Dsonar.verbose=true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
+    # upload built project for CD pipeline
     - name: dotnet publish
       run: cd BPCalculator && dotnet publish -c Release --property:PublishDir=../myapp
 

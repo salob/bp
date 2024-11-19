@@ -10,7 +10,8 @@ namespace BPCalculator
         {
           "Reduce sodium intake to lower blood pressure.",
           "Exercise regularly to strengthen your heart.",
-          "Avoid stress and practice relaxation techniques."
+          "Avoid stress and practice relaxation techniques.",
+          "No more"
         }
       },
       { BPCategory.PreHigh, new List<string>()

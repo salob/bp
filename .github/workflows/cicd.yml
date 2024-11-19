@@ -63,7 +63,7 @@ jobs:
           -Dsonar.organization=salob
           -Dsonar.projectKey=salob_bp
           -Dsonar.sources=BPCalculator/
-          -Dsonar.cs.vscoveragexml.reportsPaths=TestResults/coverage.opencover.xml
+          -Dsonar.cs.opencover.reportsPaths=TestResults/coverage.opencover.xml
           -Dsonar.verbose=true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

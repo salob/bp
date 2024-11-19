@@ -29,16 +29,13 @@ jobs:
       run: dotnet test BPCalculatorTest/BPCalculatorTest.csproj --no-build --configuration Release --collect:"XPlat Code Coverage"
 
     - name: Install ReportGenerator
-      run: dotnet tool install --global dotnet-reportgenerator-globaltool
+      run: dotnet tool install --tool-path tools dotnet-reportgenerator-globaltool
       env:
         DOTNET_CLI_HOME: ${{ runner.temp }}
 
-    - name: Add ReportGenerator to PATH
-      run: echo "${HOME}/.dotnet/tools" >> $GITHUB_PATH
-
     - name: Convert Coverage Report to lcov
       run: |
-        reportgenerator \
+        ./tools/reportgenerator \
           "-reports:TestResults/*/coverage.cobertura.xml" \
           "-targetdir:coverage" \
           "-reporttypes:lcov"

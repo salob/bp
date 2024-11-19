@@ -26,17 +26,17 @@ jobs:
 
     # run standard unit tests
     - name: Run unit tests
-      # run: dotnet test BPCalculatorTest/BPCalculatorTest.csproj --no-restore --configuration Release --collect:"XPlat Code Coverage" --collect "Code coverage" -l:trx
-      run: dotnet test BPCalculatorTest/BPCalculatorTest.csproj --no-restore --configuration Release -p:CollectCoverage=true -p:CoverletOutput=TestResults/ -p:CoverletOutputFormat=opencover
+      run: dotnet test BPCalculatorTest/BPCalculatorTest.csproj --no-restore --configuration Release --collect:"XPlat Code Coverage" --collect "Code coverage" -l:trx
+      #run: dotnet test BPCalculatorTest/BPCalculatorTest.csproj --no-restore --configuration Release -p:CollectCoverage=true -p:CoverletOutput=TestResults/ -p:CoverletOutputFormat=opencover
 
-    # # publish unit test results to github
-    # - name: Publish Unit Test Results
-    #   uses: dorny/test-reporter@v1
-    #   with:
-    #     artifact: ''
-    #     name: MS Tests
-    #     path: '**.trx'
-    #     reporter: 'dotnet-trx'
+    # publish unit test results to github
+    - name: Publish Unit Test Results
+      uses: dorny/test-reporter@v1
+      with:
+        artifact: ''
+        name: MS Tests
+        path: '**.trx'
+        reporter: 'dotnet-trx'
     
     # # code coverage
     # - name: Install ReportGenerator
@@ -63,7 +63,7 @@ jobs:
           -Dsonar.organization=salob
           -Dsonar.projectKey=salob_bp
           -Dsonar.sources=BPCalculator/
-          -Dsonar.cs.opencover.reportsPaths=TestResults/coverage.opencover.xml
+          -Dsonar.cs.opencover.reportsPaths=BPCalculatorTest/TestResults/**/coverage.cobertura.xml
           -Dsonar.verbose=true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -71,7 +71,7 @@ jobs:
 
     # upload built project for CD pipeline
     - name: dotnet publish
-      run: cd BPCalculator && dotnet publish -c Release --property:PublishDir=../myapp
+      run: ls -la TestResults && cd BPCalculator && dotnet publish -c Release --property:PublishDir=../myapp
 
     - name: Upload artifact for deployment job
       uses: actions/upload-artifact@v4

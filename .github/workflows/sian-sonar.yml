@@ -51,8 +51,8 @@ jobs:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       run: |
         ./tools/dotnet-sonarscanner begin \
-          /k:"<your-project-key>" \
-          /o:"<your-organization>" \
+          /k:"salob_bp" \
+          /o:"salob" \
           /d:sonar.host.url="https://sonarcloud.io" \
           /d:sonar.login="${{ secrets.SONAR_TOKEN }}" \
           /d:sonar.cs.opencover.reportsPaths="coverage/lcov.info"

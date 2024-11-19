@@ -44,6 +44,7 @@ public class BloodPressureTest
   }
   
   [DataTestMethod]
+  [DataRow(70, 59, BPCategory.High)]
   [DataRow(150, 90, BPCategory.High)]
   [DataRow(120, 80, BPCategory.PreHigh)]
   [DataRow(119, 79, BPCategory.Ideal)]

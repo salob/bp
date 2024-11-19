@@ -22,13 +22,14 @@ jobs:
 
     # build the project
     - name: Build for Release
-      run: dotnet build --configuration Release
+      run: dotnet build --configuration Release /p:ContinuousIntegrationBuild=true
 
     # run standard unit tests
     - name: Run unit tests
       #run: dotnet test BPCalculatorTest/BPCalculatorTest.csproj --no-restore --configuration Release --collect:"XPlat Code Coverage" --collect "Code coverage" -l:trx
       #run: dotnet test BPCalculatorTest/BPCalculatorTest.csproj --no-restore --configuration Release -p:CollectCoverage=true -p:CoverletOutput=TestResults/ -p:CoverletOutputFormat=opencover
-      run:  dotnet test BPCalculatorTest/BPCalculatorTest.csproj --no-restore --configuration Release --collect:"XPlat Code Coverage;Format=opencover" --collect "Code coverage" -l:trx
+      #run:  dotnet test BPCalculatorTest/BPCalculatorTest.csproj --no-restore --configuration Release --collect:"XPlat Code Coverage;Format=opencover" --collect "Code coverage" -l:trx
+      run:  dotnet test BPCalculatorTest/BPCalculatorTest.csproj --no-restore --configuration Release --collect:"XPlat Code Coverage;Format=opencover" --collect "Code coverage" -l:trx -p:DeterministicSourcePaths=false /p:ContinuousIntegrationBuild=true
 
     # publish unit test results to github
     - name: Publish Unit Test Results
@@ -65,6 +66,7 @@ jobs:
           -Dsonar.projectKey=salob_bp
           -Dsonar.sources=BPCalculator/
           -Dsonar.cs.opencover.reportsPaths=BPCalculatorTest/TestResults/**/coverage.opencover.xml
+          -Dsonar.cs.vstest.reportsPaths=**.trx
           -Dsonar.verbose=true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

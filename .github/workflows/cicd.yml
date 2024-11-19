@@ -22,7 +22,7 @@ jobs:
 
     # build the project
     - name: Build for Release
-      run: dotnet build --configuration Release /p:ContinuousIntegrationBuild=true
+      run: dotnet build --configuration Release /p:ContinuousIntegrationBuild=true --no-restore
 
     # run standard unit tests
     - name: Run unit tests

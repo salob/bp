@@ -40,7 +40,8 @@ jobs:
   
     - name: Convert Coverage Report to lcov
       run: |
-        ./tools/reportgenerator \
+        dotnet tool install dotnet-sonarscanner --global
+        reportgenerator \
           "-reports:BPCalculatorTest/TestResults/*/coverage.cobertura.xml" \
           "-targetdir:coverage" \
           "-reporttypes:lcov"

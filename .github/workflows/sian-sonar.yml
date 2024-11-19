@@ -33,7 +33,7 @@ jobs:
       env:
         DOTNET_CLI_HOME: ${{ runner.temp }}
     
-     - name: Install SonarScanner
+    - name: Install SonarScanner
       run: dotnet tool install --tool-path tools dotnet-sonarscanner
       env:
         DOTNET_CLI_HOME: ${{ runner.temp }}

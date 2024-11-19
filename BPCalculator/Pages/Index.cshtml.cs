@@ -9,7 +9,6 @@ namespace BPCalculator.Pages
     {
         [BindProperty]                              // bound on POST
         public BloodPressure BP { get; set; }
-
         // setup initial data
         public void OnGet()
         {

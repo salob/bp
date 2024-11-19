@@ -11,25 +11,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # Checkout repository
     - name: Checkout Code
       uses: actions/checkout@v3
 
-    # Setup .NET SDK
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '8.0' # Use the correct .NET version for your project
+        dotnet-version: '8.0' # Use .NET 8
 
-    # Restore dependencies
     - name: Restore Dependencies
       run: dotnet restore
 
-    # Build the solution
     - name: Build Solution
       run: dotnet build --no-restore --configuration Release
 
-    # Run unit tests and collect coverage
     - name: Run Tests with Coverage
       run: dotnet test BPCalculatorTest/BPCalculatorTest.csproj --no-build --configuration Release --collect:"XPlat Code Coverage"
 
@@ -38,17 +33,16 @@ jobs:
       env:
         DOTNET_CLI_HOME: ${{ runner.temp }}
 
-    # Convert coverage report to lcov format
+    - name: Add ReportGenerator to PATH
+      run: echo "::add-path::$(dotnet tool list --global | grep reportgenerator | awk '{print $3}')"
+
     - name: Convert Coverage Report to lcov
       run: |
         reportgenerator \
           "-reports:TestResults/*/coverage.cobertura.xml" \
           "-targetdir:coverage" \
           "-reporttypes:lcov"
-      env:
-        DOTNET_CLI_HOME: ${{ runner.temp }} # Prevent permission issues with report generator
 
-    # Upload coverage data to SonarCloud
     - name: Upload to SonarCloud
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -64,4 +58,4 @@ jobs:
         dotnet build
         
         dotnet-sonarscanner end \
-          /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+          /d:sonar.login="${

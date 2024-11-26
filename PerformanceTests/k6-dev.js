@@ -25,17 +25,22 @@ export default function() {
   check(res, {
     "is status 200": (r) => r.status === 200
   });
-
-  // POST with random data to prevent server cached response to POST, discard response body
+  // POST with random data to prevent server cached response to POST
   res = res.submitForm({
     fields: { 'BP.Systolic' : (Math.floor(Math.random() * 121) + 70).toString(),  // Simulated systolic value (70 - 190)
-              'BP.Diastolic': (Math.floor(Math.random() * 61) + 40).toString() }  // Simulated diastolic value (40 - 100)
+              'BP.Diastolic' : (Math.floor(Math.random() * 61) + 40).toString() }  // Simulated diastolic value (40 - 100)
   });
 
   // Validate the response
   check(res, {
       'status is 200': (r) => r.status === 200,
+      'Body contains Blood Pressure Category': (r) => r.body.includes(' Blood Pressure') || r.body.includes('Systolic must be greater than Diastolic'),
   });
+  console.log(res.status)
+  const matchingLines = res.body
+      .split('\n') 
+      .filter(line => line.includes(' Blood Pressure'));
+  matchingLines.forEach(line => console.log(line));  
   // "think" for 3 seconds
   sleep(3);
 }

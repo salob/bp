@@ -30,7 +30,7 @@ export default function() {
   let res = http.get("http://localhost:1979", {"responseType": "text"})
 
   check(res, {
-    "is status 200": (r) => r.status === 200
+    "get status is 200": (r) => r.status === 200
   });
   // POST with random data to prevent server cached response to POST
   let bp = getRandomBloodPressure()
@@ -41,9 +41,10 @@ export default function() {
 
   // Validate the response
   check(res, {
-      'status is 200': (r) => r.status === 200,
-      'Body contains Blood Pressure Category': (r) => r.body.includes(' Blood Pressure')
+      'post status is 200': (r) => r.status === 200,
+      'post body contains blood presure category': (r) => r.body.includes(' Blood Pressure')
   });
+  // logging for troubleshooting
   console.log(res.status)
   const matchingLines = res.body
       .split('\n') 

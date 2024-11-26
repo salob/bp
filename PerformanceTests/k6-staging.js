@@ -17,24 +17,32 @@ export let options = {
   discardResponseBodies: false,
 }; //end options
 
+/** Generate random blood pressure values in correct ranges
+ and ensure systolic is greater than diastolic**/
+function getRandomBloodPressure() {
+  const diastolic = Math.floor(Math.random() * 61) + 40; // Range: 40 - 100
+  const systolic = Math.max(Math.floor(Math.random() * 121) + 70, diastolic + 1); // Ensure systolic >= diastolic + 1
+  return { systolic, diastolic };
+}
 // main k6 function
 export default function() {
  
-  let res = http.get("https://sb-csd-bp.azurewebsites.net/", {"responseType": "text"})
+let res = http.get("https://sb-csd-bp.azurewebsites.net/", {"responseType": "text"})
 
   check(res, {
-    "is status 200": (r) => r.status === 200
+    "get status is 200": (r) => r.status === 200
   });
-
-  // POST with random data to prevent server cached response to POST, discard response body
+  // POST with random data to prevent server cached response to POST
+  let bp = getRandomBloodPressure()
   res = res.submitForm({
-    fields: { 'BP.Systolic' : (Math.floor(Math.random() * 121) + 70).toString(),  // Simulated systolic value (70 - 190)
-              'BP.Diastolic': (Math.floor(Math.random() * 61) + 40).toString() }  // Simulated diastolic value (40 - 100)
+    fields: { 'BP.Systolic' : bp.systolic,  // Simulated systolic value (70 - 190)
+              'BP.Diastolic' : bp.diastolic }  // Simulated diastolic value (40 - 100)
   });
 
   // Validate the response
   check(res, {
-      'status is 200': (r) => r.status === 200,
+      'post status is 200': (r) => r.status === 200,
+      'post body contains blood presure category': (r) => r.body.includes(' Blood Pressure')
   });
   // "think" for 3 seconds
   sleep(3);

@@ -17,6 +17,13 @@ export let options = {
   discardResponseBodies: false,
 }; //end options
 
+/** Generate random blood pressure values in correct ranges
+ and ensure systolic is greater than diastolic**/
+function getRandomBloodPressure() {
+  const diastolic = Math.floor(Math.random() * 61) + 40; // Range: 40 - 100
+  const systolic = Math.max(Math.floor(Math.random() * 121) + 70, diastolic + 1); // Ensure systolic >= diastolic + 1
+  return { systolic, diastolic };
+}
 // main k6 function
 export default function() {
  
@@ -26,15 +33,16 @@ export default function() {
     "is status 200": (r) => r.status === 200
   });
   // POST with random data to prevent server cached response to POST
+  let bp = getRandomBloodPressure()
   res = res.submitForm({
-    fields: { 'BP.Systolic' : (Math.floor(Math.random() * 121) + 70).toString(),  // Simulated systolic value (70 - 190)
-              'BP.Diastolic' : (Math.floor(Math.random() * 61) + 40).toString() }  // Simulated diastolic value (40 - 100)
+    fields: { 'BP.Systolic' : bp.systolic,  // Simulated systolic value (70 - 190)
+              'BP.Diastolic' : bp.diastolic }  // Simulated diastolic value (40 - 100)
   });
 
   // Validate the response
   check(res, {
       'status is 200': (r) => r.status === 200,
-      'Body contains Blood Pressure Category': (r) => r.body.includes(' Blood Pressure') || r.body.includes('Systolic must be greater than Diastolic'),
+      'Body contains Blood Pressure Category': (r) => r.body.includes(' Blood Pressure')
   });
   console.log(res.status)
   const matchingLines = res.body

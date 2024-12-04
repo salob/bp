@@ -79,6 +79,9 @@ jobs:
           -Dsonar.cs.opencover.reportsPaths=BPCalculatorTest/TestResults/**/coverage.opencover.xml
           -Dsonar.cs.vstest.reportsPaths=**.trx
           -Dsonar.verbose=true
+          -Dsonar.cs.opencover.reportsPaths=BPCalculatorTest/TestResults/coverage.cobertura.xml
+          -Dsonar.cs.vstest.reportsPaths=**.trx
+          -Dsonar.verbose=true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

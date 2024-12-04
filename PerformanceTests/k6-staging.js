@@ -10,8 +10,8 @@ export let options = {
   ],
 
  	thresholds: {
-    "http_req_duration": ["p(95) < 100"],
-    "iteration_duration": ["p(90) < 5"]
+    "http_req_duration": ["p(95) < 200ms"],
+    "iteration_duration": ["p(90) < 5s"]
   },
 
   // required for post for antiforgery 

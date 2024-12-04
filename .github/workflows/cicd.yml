@@ -10,11 +10,16 @@ on:
   workflow_dispatch:
 
 jobs:
-  ci:
+  build-and-test:
     permissions: write-all
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+
+    # Checkout the project
+    - name: Checkout
+      uses: actions/checkout@v4
+    
+    # Install and Configure Dotnet
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
@@ -26,10 +31,6 @@ jobs:
 
     # run standard unit tests
     - name: Run unit tests
-      #run: dotnet test BPCalculatorTest/BPCalculatorTest.csproj --no-restore --configuration Release --collect:"XPlat Code Coverage" --collect "Code coverage" -l:trx
-      #run: dotnet test BPCalculatorTest/BPCalculatorTest.csproj --no-restore --configuration Release -p:CollectCoverage=true -p:CoverletOutput=TestResults/ -p:CoverletOutputFormat=opencover
-      #run:  dotnet test BPCalculatorTest/BPCalculatorTest.csproj --no-restore --configuration Release --collect:"XPlat Code Coverage;Format=opencover" --collect "Code coverage" -l:trx
-      #run:  dotnet test BPCalculatorTest/BPCalculatorTest.csproj --no-restore --configuration Release --collect:"XPlat Code Coverage;Format=opencover" --collect "Code coverage" -l:trx -p:DeterministicSourcePaths=false -p:ContinuousIntegrationBuild=true
       run: dotnet test BPCalculatorTest/BPCalculatorTest.csproj --no-restore --configuration Release --collect:"XPlat Code Coverage" --collect "Code coverage" -l:trx
 
     # publish unit test results to github
@@ -60,6 +61,8 @@ jobs:
       with:
         name: coverage-report
         path: coverage-report/
+    - name Publish coverage report
+      run: |
 
     # run sonar cloud analyis (report in https://sonarcloud.io/project/information?id=gclynch_bankCI2022)
     # define SONAR_TOKEN secret to match project token
@@ -87,7 +90,7 @@ jobs:
         name: .net-app
         path: ./myapp
   
-  cd:
+  deploy:
     permissions:
       contents: none
     runs-on: ubuntu-latest
@@ -109,7 +112,17 @@ jobs:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
-      
+  
+  
+  post-deploy:
+      runs-on: ubuntu-latest
+      steps:
+
+      # Checkout the project
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Performance Tests    
       - name: Run K6 Performance Tests
         run: |
           docker pull grafana/k6

@@ -6,7 +6,7 @@ env:
   AZURE_WEBAPP_PACKAGE_PATH: '.'
 on:
   push:
-    branches: [ "main","sian/sonar" ]
+    branches: [ "main" ]
   workflow_dispatch:
 
 jobs:
@@ -14,7 +14,12 @@ jobs:
     permissions: write-all
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+
+    # Checkout the project
+    - name: Checkout
+      uses: actions/checkout@v4
+    
+    # Install and Configure Dotnet
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
@@ -26,10 +31,7 @@ jobs:
 
     # run standard unit tests
     - name: Run unit tests
-      #run: dotnet test BPCalculatorTest/BPCalculatorTest.csproj --no-restore --configuration Release --collect:"XPlat Code Coverage" --collect "Code coverage" -l:trx
-      #run: dotnet test BPCalculatorTest/BPCalculatorTest.csproj --no-restore --configuration Release -p:CollectCoverage=true -p:CoverletOutput=TestResults/ -p:CoverletOutputFormat=opencover
-      #run:  dotnet test BPCalculatorTest/BPCalculatorTest.csproj --no-restore --configuration Release --collect:"XPlat Code Coverage;Format=opencover" --collect "Code coverage" -l:trx
-      run:  dotnet test BPCalculatorTest/BPCalculatorTest.csproj --no-restore --configuration Release --collect:"XPlat Code Coverage;Format=opencover" --collect "Code coverage" -l:trx -p:DeterministicSourcePaths=false -p:ContinuousIntegrationBuild=true
+      run: dotnet test BPCalculatorTest/BPCalculatorTest.csproj --no-restore --configuration Release --collect:"XPlat Code Coverage" --collect "Code coverage" -l:trx
 
     # publish unit test results to github
     - name: Publish Unit Test Results
@@ -44,23 +46,25 @@ jobs:
       run: |
         dotnet tool install --global dotnet-coverage
 
+    # code coverage
+    - name: Install Dotnet Code Coverage
+      run: |
+        dotnet tool install --global dotnet-coverage
+  
+    - name: Install ReportGenerator
+      run: dotnet tool install --global dotnet-reportgenerator-globaltool
+      env:
+       DOTNET_TOOL_ROOT: $HOME/.dotnet/tools
 
+    - name: Generate HTML Code Test Coverage Report
+      run: |
+        reportgenerator -reports:./BPCalculatorTest/TestResults/**/coverage.cobertura.xml -targetdir:coverage-report -reporttypes:Html
 
-    # # code coverage
-    # - name: Install ReportGenerator
-    #   run: dotnet tool install --global dotnet-reportgenerator-globaltool
-    #   env:
-    #    DOTNET_TOOL_ROOT: $HOME/.dotnet/tools
-
-    # - name: Generate HTML Code Test Coverage Report
-    #   run: |
-    #     reportgenerator -reports:./BPCalculatorTest/TestResults/**/coverage.cobertura.xml -targetdir:coverage-report -reporttypes:Html
-
-    # - name: Upload coverage report
-    #   uses: actions/upload-artifact@v4
-    #   with:
-    #     name: coverage-report
-    #     path: coverage-report/
+    - name: Upload coverage report
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-report
+        path: coverage-report/
 
     # run sonar cloud analyis (report in https://sonarcloud.io/project/information?id=gclynch_bankCI2022)
     # define SONAR_TOKEN secret to match project token
@@ -110,7 +114,36 @@ jobs:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
-      
+  
+  post-validation:
+    runs-on: ubuntu-latest
+    needs: cd
+    steps:
+      # Checkout the project
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Performance Tests    
       - name: Run K6 Performance Tests
         run: |
-          k6 run ./PerformanceTests/k6-staging.js
+          docker pull grafana/k6
+          pwd
+          ls -la
+          docker run -v $GITHUB_WORKSPACE/PerformanceTests:/opt/ -i grafana/k6 run /opt/k6-staging.js
+
+      # - name: Depcheck
+      #   uses: dependency-check/Dependency-Check_Action@main
+      #   id: Depcheck
+      #   with:
+      #     project: 'BMI'
+      #     path: '.'
+      #     format: 'HTML'    
+      #     args: >
+      #       --failOnCVSS 8            
+      #     # fail if CVSS score (CVE scoring system) is High >=8
+          
+      # - name: Upload Test results
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #      name: Depcheck report
+      #      path: ${{github.workspace}}/reports

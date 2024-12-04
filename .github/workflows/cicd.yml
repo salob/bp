@@ -113,7 +113,9 @@ jobs:
       - name: Run K6 Performance Tests
         run: |
           docker pull grafana/k6
-          docker run -v $GITHUB_WORKSPACE:. -i grafana/k6 run ./PerformanceTests/k6-staging.js
+          pwd
+          ls -la
+          docker run -v $GITHUB_WORKSPACE/PerformanceTests:/opt/ -i grafana/k6 run /opt/k6-staging.js
 
       # - name: Depcheck
       #   uses: dependency-check/Dependency-Check_Action@main

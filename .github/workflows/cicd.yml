@@ -44,23 +44,21 @@ jobs:
       run: |
         dotnet tool install --global dotnet-coverage
 
+    # code coverage
+    - name: Install ReportGenerator
+      run: dotnet tool install --global dotnet-reportgenerator-globaltool
+      env:
+       DOTNET_TOOL_ROOT: $HOME/.dotnet/tools
 
+    - name: Generate HTML Code Test Coverage Report
+      run: |
+        reportgenerator -reports:./BPCalculatorTest/TestResults/**/coverage.cobertura.xml -targetdir:coverage-report -reporttypes:Html
 
-    # # code coverage
-    # - name: Install ReportGenerator
-    #   run: dotnet tool install --global dotnet-reportgenerator-globaltool
-    #   env:
-    #    DOTNET_TOOL_ROOT: $HOME/.dotnet/tools
-
-    # - name: Generate HTML Code Test Coverage Report
-    #   run: |
-    #     reportgenerator -reports:./BPCalculatorTest/TestResults/**/coverage.cobertura.xml -targetdir:coverage-report -reporttypes:Html
-
-    # - name: Upload coverage report
-    #   uses: actions/upload-artifact@v4
-    #   with:
-    #     name: coverage-report
-    #     path: coverage-report/
+    - name: Upload coverage report
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-report
+        path: coverage-report/
 
     # run sonar cloud analyis (report in https://sonarcloud.io/project/information?id=gclynch_bankCI2022)
     # define SONAR_TOKEN secret to match project token
@@ -114,7 +112,7 @@ jobs:
       - name: Run K6 Performance Tests
         run: |
           docker pull grafana/k6
-          docker run -i grafana/k6 run ./PerformanceTests/k6-staging.js
+          docker run -v $GITHUB_WORKSPACE:. -i grafana/k6 run ./PerformanceTests/k6-staging.js
 
       # - name: Depcheck
       #   uses: dependency-check/Dependency-Check_Action@main

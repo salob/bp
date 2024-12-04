@@ -27,7 +27,7 @@ jobs:
 
     # build the project
     - name: Build for Release
-      run: dotnet build --configuration Release /p:ContinuousIntegrationBuild=true
+      run: dotnet build --configuration Release
 
     # run standard unit tests
     - name: Run unit tests
@@ -74,7 +74,8 @@ jobs:
         args: >
           -Dsonar.organization=salob
           -Dsonar.projectKey=salob_bp
-          -Dsonar.sources=BPCalculator/
+          -Dsonar.sources=.
+          -Dsonar.exclusions=**/wwwroot/**,**/bin/**,**/obj/**
           -Dsonar.cs.opencover.reportsPaths=BPCalculatorTest/TestResults/**/coverage.opencover.xml
           -Dsonar.cs.vstest.reportsPaths=**.trx
           -Dsonar.verbose=true

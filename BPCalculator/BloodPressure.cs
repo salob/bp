@@ -46,27 +46,7 @@ namespace BPCalculator
                 }
                 return category;
             }
-        }
-        public BPCategory NewCategory
-        {
-            get
-            {
-                BPCategory category;
-                if(this.Systolic < 90 && this.Diastolic < 60){
-                  category = BPCategory.Low;
-                }
-                else if(this.Systolic < 120 && this.Diastolic < 80){
-                  category = BPCategory.Ideal;
-                }
-                else if(this.Systolic < 140 && this.Diastolic < 90){
-                  category = BPCategory.PreHigh;
-                }
-                else{
-                  category = BPCategory.High;
-                }
-                return category;
-            }
-        }        
+        }      
         // Sian's feature: Method to pick random useful tip
         private string tip;
         public string Tip{

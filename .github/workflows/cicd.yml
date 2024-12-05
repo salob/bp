@@ -66,9 +66,11 @@ jobs:
       with:
         name: coverage-report
         path: coverage-report/
-    - name: replace paths
+
+    - name: Hack for SonarQube code coverage
       run: |
         sed -i -e 's|/home/runner/work/bp/bp|\.|g' ./BPCalculatorTest/TestResults/**/coverage.opencover.xml
+
     - name: Upload opencover xml
       uses: actions/upload-artifact@v3
       with:
@@ -86,6 +88,7 @@ jobs:
           -Dsonar.cs.opencover.reportsPaths=./BPCalculatorTest/TestResults/**/coverage.opencover.xml
           -Dsonar.cs.vstest.reportsPaths=**.trx
           -Dsonar.sources=.
+          -Dsonar.coverage.exclusions=./PerformanceTests
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

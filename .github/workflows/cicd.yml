@@ -68,6 +68,10 @@ jobs:
 
     # run sonar cloud analyis (report in https://sonarcloud.io/project/information?id=gclynch_bankCI2022)
     # define SONAR_TOKEN secret to match project token
+    - name: Check Cobertura Report
+      run: |
+        ls -la BPCalculatorTest/TestResults/
+        cat BPCalculatorTest/TestResults/coverage.cobertura.xml  
     - name: Analyze code with SonarCloud
       uses: sonarsource/sonarcloud-github-action@master
       with:

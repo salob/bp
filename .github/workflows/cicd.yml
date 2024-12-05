@@ -87,7 +87,7 @@ jobs:
           -Dsonar.verbose=true
           -Dsonar.cs.opencover.reportsPaths=./BPCalculatorTest/TestResults/**/coverage.opencover.xml
           -Dsonar.cs.vstest.reportsPaths=**.trx
-          -Dsonar.sources=.
+          -Dsonar.sources=./BPCalculator
           -Dsonar.coverage.exclusions=./PerformanceTests/**,./BPCalculator/Startup.cs,./BPCalculator/Pages/**,./BPCalculator/Program.cs
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -71,7 +71,7 @@ jobs:
     - name: Check Cobertura Report
       run: |
         ls -la BPCalculatorTest/TestResults/
-        cat BPCalculatorTest/TestResults/coverage.cobertura.xml  
+ 
     - name: Analyze code with SonarCloud
       uses: sonarsource/sonarcloud-github-action@master
       with:

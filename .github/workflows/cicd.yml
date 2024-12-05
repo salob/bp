@@ -6,7 +6,7 @@ env:
   AZURE_WEBAPP_PACKAGE_PATH: '.'
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main","sian/iac" ]
   workflow_dispatch:
 
 jobs:
@@ -102,6 +102,24 @@ jobs:
       with:
         name: .net-app
         path: ./myapp
+    
+    # IaC - Azure login using service principal
+    - name: Login to Azure
+    uses: azure/login@v2
+    with:
+      client-id: ${{ secrets.AZURE_CLIENT_ID }}
+      tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+      subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+    
+    # IaC - Provision Web App
+    - name: Deploy Bicep file
+      run: |
+        az deployment group create \
+          --resource-group sb-csd-rg \
+          --template-file IaC/template.bicep
+          --parameters @IaC/parameters.json
+    
   
   cd:
     permissions:

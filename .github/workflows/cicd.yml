@@ -83,7 +83,7 @@ jobs:
           -Dsonar.cs.opencover.reportsPaths=./BPCalculatorTest/TestResults/**/coverage.opencover.xml
           -Dsonar.cs.vstest.reportsPaths=**.trx
           -Dsonar.scm.exclusions.disabled=true
-          -Dsonar.projectBaseDir=/home/runner/work/bp/bp/
+          -Dsonar.projectBaseDir=$GITHUB_WORKSPACE
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

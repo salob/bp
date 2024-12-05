@@ -78,7 +78,7 @@ jobs:
         args: >
           -Dsonar.organization=salob
           -Dsonar.projectKey=salob_bp
-          -Dsonar.exclusions=**/wwwroot/**,**/bin/**,**/obj/**,**/coverage-report/**,**/docs/**
+          -Dsonar.exclusions=**/wwwroot/**,**/bin/**,**/obj/**,**/coverage-report/**,**/docs/**,PerformanceTests/k6-dev.js
           -Dsonar.cs.vstest.reportsPaths=**.trx
           -Dsonar.verbose=true
           -Dsonar.cs.opencover.reportsPaths=./BPCalculatorTest/TestResults/**/coverage.opencover.xml

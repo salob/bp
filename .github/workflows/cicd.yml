@@ -32,7 +32,7 @@ jobs:
     # run standard unit tests
     - name: Run unit tests
       # run: dotnet test BPCalculatorTest/BPCalculatorTest.csproj --no-restore --configuration Release --collect:"XPlat Code Coverage" --collect "Code coverage" -l:trx
-      run: dotnet test BPCalculatorTest/BPCalculatorTest.csproj --no-restore --configuration Release --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura
+      run: dotnet test BPCalculatorTest/BPCalculatorTest.csproj --no-restore --configuration Release --collect:"XPlat Code Coverage" -l:trx -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura
 
     # publish unit test results to github
     - name: Publish Unit Test Results

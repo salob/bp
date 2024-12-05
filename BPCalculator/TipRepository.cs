@@ -10,8 +10,7 @@ namespace BPCalculator
         {
           "Reduce sodium intake to lower blood pressure.",
           "Exercise regularly to strengthen your heart.",
-          "Avoid stress and practice relaxation techniques.",
-          "No more"
+          "Avoid stress and practice relaxation techniques."
         }
       },
       { BPCategory.PreHigh, new List<string>()
@@ -32,7 +31,7 @@ namespace BPCalculator
         {
           "Continue maintaining a healthy lifestyle.",
           "Exercise regularly to keep your blood pressure in check.",
-          "Eat a balanced diet rich in fruits and vegetables."
+          "Eat a balanced diet rich in fruits and vegetables to maintain a healthy blood pressure"
         }
       }
     };

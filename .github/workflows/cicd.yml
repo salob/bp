@@ -85,7 +85,7 @@ jobs:
           -Dsonar.cs.opencover.reportsPaths=BPCalculatorTest/TestResults/**/coverage.opencover.xml
           -Dsonar.cs.vstest.reportsPaths=**.trx
           -Dsonar.verbose=true
-          -Dsonar.cs.opencover.reportsPaths=./BPCalculatorTest/TestResults/**/coverage.cobertura.xml
+          -Dsonar.cs.opencover.reportsPaths=./converted-coverage/**/*.xml
           -Dsonar.cs.vstest.reportsPaths=**.trx
           -Dsonar.verbose=true
       env:

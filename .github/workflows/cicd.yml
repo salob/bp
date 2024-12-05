@@ -78,7 +78,6 @@ jobs:
         args: >
           -Dsonar.organization=salob
           -Dsonar.projectKey=salob_bp
-          -Dsonar.sources=.
           -Dsonar.exclusions=**/wwwroot/**,**/bin/**,**/obj/**,**/coverage-report/**,**/docs/**
           -Dsonar.cs.vstest.reportsPaths=**.trx
           -Dsonar.verbose=true

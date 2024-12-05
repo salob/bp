@@ -32,7 +32,7 @@ jobs:
     # run standard unit tests
     - name: Run unit tests
       # run: dotnet test BPCalculatorTest/BPCalculatorTest.csproj --no-restore --configuration Release --collect:"XPlat Code Coverage" --collect "Code coverage" -l:trx
-      run: dotnet test BPCalculatorTest/BPCalculatorTest.csproj --no-restore --configuration Release --collect:"XPlat Code Coverage" -l:trx -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura
+      run: dotnet test BPCalculatorTest/BPCalculatorTest.csproj --no-restore --configuration Release --collect:"XPlat Code Coverage" -l:trx -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
 
     # publish unit test results to github
     - name: Publish Unit Test Results
@@ -60,7 +60,6 @@ jobs:
     - name: Generate HTML Code Test Coverage Report
       run: |
         reportgenerator -reports:./BPCalculatorTest/TestResults/**/coverage.cobertura.xml -targetdir:coverage-report -reporttypes:Html
-        reportgenerator -reports:./BPCalculatorTest/TestResults/**/coverage.cobertura.xml -targetdir:converted-coverage -reporttypes:OpenCover
 
     - name: Upload coverage report
       uses: actions/upload-artifact@v4
@@ -85,7 +84,7 @@ jobs:
           -Dsonar.cs.opencover.reportsPaths=BPCalculatorTest/TestResults/**/coverage.opencover.xml
           -Dsonar.cs.vstest.reportsPaths=**.trx
           -Dsonar.verbose=true
-          -Dsonar.cs.opencover.reportsPaths=./converted-coverage/**/*.xml
+          -Dsonar.cs.opencover.reportsPaths=./BPCalculatorTest/TestResults/**/coverage.opencover.xml
           -Dsonar.cs.vstest.reportsPaths=**.trx
           -Dsonar.verbose=true
       env:

@@ -126,8 +126,8 @@ jobs:
       run: |
         az deployment group create \
           --resource-group sb-csd-rg \
-          --template-file IaC/template.bicep
-          --parameters @IaC/parameters.json
+          --template-file Infrastructure/template.bicep
+          --parameters @Infrastructure/parameters.json
     
   
   cd:

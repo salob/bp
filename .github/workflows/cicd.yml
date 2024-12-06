@@ -102,7 +102,7 @@ jobs:
         name: .net-app
         path: ./myapp
     
-    # IaC - Azure login using service principal
+    # IaC - Azure login using service principal and secret
     - name: Login to Azure
       uses: azure/login@v2
       with:

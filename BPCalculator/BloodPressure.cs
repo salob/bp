@@ -31,6 +31,15 @@ namespace BPCalculator
         {
             get
             {
+                // Additional validation to Range for Tests
+
+                if (Systolic < SystolicMin || Systolic > SystolicMax || 
+                    Diastolic < DiastolicMin || Diastolic > DiastolicMax ||
+                    Systolic <= Diastolic)
+                {
+                    throw new ValidationException("Invalid Blood Pressure Values");
+                }
+
                 BPCategory category;
                 if(this.Systolic < 90 && this.Diastolic < 60){
                   category = BPCategory.Low;

@@ -24,8 +24,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
      # debug trigger
-      - name: Print GitHub Context
-        run: echo "${{ toJson(github) }}"
+    - name: Print GitHub Context
+      run: echo "${{ toJson(github) }}"
     # Checkout the project
     - name: Checkout
       uses: actions/checkout@v4

@@ -120,9 +120,7 @@ jobs:
     # Checkout the project
     - name: Checkout
       uses: actions/checkout@v4
-    # debug
-    - name: Debug
-      run: ls -la
+
     # IaC - Azure login using service principal and secret
     - name: Azure Login action
       uses: azure/login@v2

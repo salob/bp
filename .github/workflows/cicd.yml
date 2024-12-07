@@ -25,7 +25,7 @@ jobs:
     steps:
      # debug logic
     - name: Print logic
-      run: echo ${{ github.event.workflow_run.head_branch == 'main' && github.event.workflow_run.event == 'push' && github.event.workflow_run.conclusion == 'success' }}
+      run: echo "${{ github.event.workflow_run.head_branch == 'main' && github.event.workflow_run.event == 'push' && github.event.workflow_run.conclusion == 'success' }}"
      # debug trigger
     - name: Print GitHub Context
       run: echo "${{ toJson(github) }}"

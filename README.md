@@ -105,5 +105,5 @@ bp/
 │   ├── code-coverage/            # ReportGenerator Sample Code Coverage report
 │   ├── dependency-check/         # Dependency Check Sample report
 ├── README.md                     # Project readme
-├── LICENSE                       # License file
+├── LICENSE                       # MIT License file
 └── .gitignore                    # Git ignore file

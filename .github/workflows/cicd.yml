@@ -21,8 +21,10 @@ jobs:
         github.event.workflow_run.conclusion == 'success' 
       }}
     permissions: write-all
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest    
     steps:
+    - name: debug logic
+      run: echo "${{ github.event.workflow_run.head_branch == 'main' && github.event.workflow_run.event == 'push' && github.event.workflow_run.conclusion == 'success' }}"
      # debug trigger
     - name: Print GitHub Context
       run: echo "${{ toJson(github) }}"

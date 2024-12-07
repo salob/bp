@@ -55,7 +55,7 @@ jobs:
 
     # run acceptance tests
     - name: Run Acceptance Tests
-      run: dotnet test BDDTests/BDDTests.csproj --no-restore --configuration Release -l:"trx;LogFileName=BDDTests.trx"
+      run: dotnet test BPCalculatorBDDTest/BPCalculatorBDDTest.csproj --no-restore --configuration Release -l:"trx;LogFileName=BPCalculatorBDDTest.trx"
 
     # publish BDD test results to github
     - name: Publish Acceptance Test Results
@@ -63,7 +63,7 @@ jobs:
       with:
         artifact: ''
         name: MS Tests
-        path: '**/BDDTests.trx'
+        path: '**/BPCalculatorBDDTest.trx'
         reporter: 'dotnet-trx'
 
     # code coverage
@@ -186,13 +186,13 @@ jobs:
       
       # Run Selenium tests
       - name: Run Selenium tests
-        run: dotnet test SeleniumTest/SeleniumTest.csproj --no-restore --configuration Release -l:"trx;LogFileName=selenium.trx"
+        run: dotnet test BPCalculatorE2ETest/BPCalculatorE2ETest.csproj --no-restore --configuration Release -l:"trx;LogFileName=selenium.trx"
     
       # Upload results of selenium tests
       - uses: actions/upload-artifact@v4
         with:
           name: Selenium Tests Results
-          path: SeleniumTest/TestResults/selenium.trx
+          path: BPCalculatorE2ETest/TestResults/selenium.trx
 
   blue-green-deployment:
     runs-on: ubuntu-latest

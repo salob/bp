@@ -27,8 +27,8 @@ function getRandomBloodPressure() {
 }
 // main k6 function
 export default function() {
- 
-let res = http.get("https://sb-csd-bp.azurewebsites.net/", {"responseType": "text"})
+const baseUrl = __ENV.WEB_APP_URI;
+let res = http.get(baseUrl, {"responseType": "text"})
 
   check(res, {
     "get status is 200": (r) => r.status === 200

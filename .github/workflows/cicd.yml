@@ -144,6 +144,8 @@ jobs:
     environment:
       name: 'Staging'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+    outputs:
+      webapp-url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
       - name: Download artifact from build job
@@ -163,6 +165,8 @@ jobs:
   staging-validation:
     runs-on: ubuntu-latest
     needs: deploy-to-staging
+    env:
+      WEB_APP_URI: ${{ needs.deploy-to-staging.outputs.webapp-url }}"
     steps:
       # Checkout the project
       - name: Checkout
@@ -189,6 +193,9 @@ jobs:
   blue-green-deployment:
     runs-on: ubuntu-latest
     needs: staging-validation
+    environment:
+      name: 'Production'
+      url: ${{ steps.deploy-to-production.outputs.webapp-url }}    
     steps:
 
     # Azure login
@@ -200,6 +207,7 @@ jobs:
 
     # blue/green
     - name: swap staging and production slots
+      id: deploy-to-production
       run: |
         echo "Swapping slots from $SOURCE_SLOT to $TARGET_SLOT"
         az webapp deployment slot swap \
@@ -207,6 +215,18 @@ jobs:
           --resource-group $AZURE_RESOURCE_GROUP \
           --slot $SOURCE_SLOT \
           --target-slot $TARGET_SLOT
+ 
+          echo "Retrieving production URL..."
+          PRODUCTION_URL=$(az webapp show \
+            --name $AZURE_WEBAPP_NAME \
+            --resource-group $AZURE_RESOURCE_GROUP \
+            --query "defaultHostName" \
+            -o tsv)
+
+          echo "Production URL: $PRODUCTION_URL"
+
+          # Set output for this step
+          echo "::set-output name=webapp-url::https://$PRODUCTION_URL"
       env:
         SOURCE_SLOT: "staging"
         TARGET_SLOT: "production"

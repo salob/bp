@@ -3,6 +3,7 @@ name: CI/CD Pipeline
 env:
   DOTNET_VERSION: '8.0.x'
   AZURE_WEBAPP_NAME: "sb-csd-bp"
+  AZURE_RESOURCE_GROUP: "sb-csd-rg"
   AZURE_WEBAPP_PACKAGE_PATH: '.'
 
 on:
@@ -12,7 +13,7 @@ on:
       - completed
 
 jobs:
-  ci:
+  build-and-test:
     if: >
       ${{ 
         github.event.workflow_run.head_branch == 'main' && 
@@ -111,10 +112,10 @@ jobs:
         name: .net-app
         path: ./myapp
 
-  IaC:
+  infrastructure-as-code:
     permissions: write-all
     runs-on: ubuntu-latest
-    needs: ci
+    needs: build-and-test
     steps:
 
     # Checkout the project
@@ -135,11 +136,11 @@ jobs:
           --resource-group sb-csd-rg \
           --template-file Infrastructure/template.bicep
     
-  cd:
+  deploy-to-staging:
     permissions:
       contents: none
     runs-on: ubuntu-latest
-    needs: IaC
+    needs: infrastructure-as-code
     environment:
       name: 'Staging'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
@@ -159,9 +160,9 @@ jobs:
           package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
           slot-name: staging
   
-  post-validation:
+  staging-validation:
     runs-on: ubuntu-latest
-    needs: cd
+    needs: deploy-to-staging
     steps:
       # Checkout the project
       - name: Checkout
@@ -174,3 +175,28 @@ jobs:
           pwd
           ls -la
           docker run -v $GITHUB_WORKSPACE/PerformanceTests:/opt/ -i grafana/k6 run /opt/k6-staging.js
+    
+    blue-green-deployment:
+      runs-on: ubuntu-latest
+      needs: staging-validation
+      steps:
+
+      # Azure login
+      - name: Azure Login action
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          enable-AzPSSession: true
+
+      # blue/green
+      - name: swap staging and production slots
+        run: |
+          echo "Swapping slots from $SOURCE_SLOT to $TARGET_SLOT"
+          az webapp deployment slot swap \
+            --name $AZURE_WEBAPP_NAME \
+            --resource-group $AZURE_RESOURCE_GROUP \
+            --slot $SOURCE_SLOT \
+            --target-slot $TARGET_SLOT
+        env:
+          SOURCE_SLOT: "staging"
+          TARGET_SLOT: "production"

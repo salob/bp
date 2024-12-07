@@ -41,6 +41,7 @@ bp/
 ├── README.md                     # Project readme
 ├── LICENSE                       # MIT License file
 └── .gitignore                    # Git ignore file
+```
 
 ## Getting Started
 

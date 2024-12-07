@@ -36,13 +36,12 @@ bp/
 │   └── BPCalculatorTest.csproj   # Test project file
 ├── Infrastructure/               # Infrastructure as code
 │   ├── template.bicep            # Azure Bicep template for web app
-├── PerformanceTest/             # K6 performance test scripts
+├── PerformanceTest/              # K6 performance test scripts
 │   └── k6-dev.js                 # Script for local development
 │   └── k6-staging.js             # Script for staging environment
-├── BPCalculatorTest/             # Unit test project
+├── SeleniumTest/                 # Unit test project
 │   └── SeleniumTest.cs           # Test class
 │   └── SeleniumTest.csproj       # Test project file
-│   └── selenium.settings         # Params for Test Build
 ├── docs/                         # GitHub Pages website files
 │   ├── code-coverage/            # ReportGenerator Sample Code Coverage report
 │   ├── dependency-check/         # Dependency Check Sample report

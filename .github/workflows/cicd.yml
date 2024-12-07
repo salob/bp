@@ -40,7 +40,6 @@ jobs:
 
     # run standard unit tests
     - name: Run unit tests
-      # run: dotnet test BPCalculatorTest/BPCalculatorTest.csproj --no-restore --configuration Release --collect:"XPlat Code Coverage" --collect "Code coverage" -l:trx
       run: dotnet test BPCalculatorTest/BPCalculatorTest.csproj --no-restore --configuration Release --collect:"XPlat Code Coverage" -l:trx -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
 
     # publish unit test results to github
@@ -52,9 +51,18 @@ jobs:
         path: '**.trx'
         reporter: 'dotnet-trx'
 
-    - name: code coverage
-      run: |
-        dotnet tool install --global dotnet-coverage
+    # run acceptance tests
+    - name: Run Acceptance Tests
+      run: dotnet test BDDTests/BDDTests.csproj --no-restore --configuration Release -l:"trx;LogFileName=BDDTests.trx"
+
+    # publish BDD test results to github
+    - name: Publish Unit Test Results
+      uses: dorny/test-reporter@v1
+      with:
+        artifact: ''
+        name: MS Tests
+        path: '**BDDTests.trx'
+        reporter: 'dotnet-trx'
 
     # code coverage
     - name: Install Dotnet Code Coverage
@@ -79,12 +87,6 @@ jobs:
     - name: Hack for SonarQube code coverage
       run: |
         sed -i -e 's|/home/runner/work/bp/bp|\.|g' ./BPCalculatorTest/TestResults/**/coverage.opencover.xml
-
-    - name: Upload opencover xml
-      uses: actions/upload-artifact@v4
-      with:
-        name: opencover
-        path: ./BPCalculatorTest/TestResults/**/coverage.opencover.xml
   
     - name: Analyze code with SonarCloud
       uses: sonarsource/sonarqube-scan-action@v4.1.0
@@ -182,7 +184,7 @@ jobs:
       
       # Run Selenium tests
       - name: Run Selenium tests
-        run: dotnet test SeleniumTest/SeleniumTest.csproj --logger:"trx;LogFileName=selenium.trx"
+        run: dotnet test SeleniumTest/SeleniumTest.csproj --no-restore --configuration Release -l:"trx;LogFileName=selenium.trx"
     
       # Upload results of selenium tests
       - uses: actions/upload-artifact@v4

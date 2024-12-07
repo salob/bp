@@ -7,10 +7,8 @@ env:
   AZURE_WEBAPP_PACKAGE_PATH: '.'
 
 on:
-  workflow_run:
-    workflows: ["SmokeTest Build"]
-    types:
-      - completed
+  push: 
+    - main
 
 jobs:
   call-smoketest:

@@ -14,7 +14,6 @@ on:
 
 jobs:
   call-smoketest:
-    needs: build-and-test
     uses: ./.github/workflows/smoketest.yml
 
   build-and-test:

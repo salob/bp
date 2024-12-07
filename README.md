@@ -41,7 +41,7 @@ bp/
 ├── BPCalculatorTest/                  # Unit test project
 │   └── BloodPressureTest.cs           # Test class
 │   └── BPCalculatorTest.csproj        # Test project file
-├── Infrastructure/                    # Infrastructure as code
+├── Infrastructure/                    # Infrastructure as code (IaC)
 │   ├── template.bicep                 # Azure Bicep template for web app
 ├── PerformanceTest/                   # K6 performance test scripts
 │   └── k6-dev.js                      # Script for local development

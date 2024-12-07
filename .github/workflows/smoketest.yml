@@ -1,10 +1,16 @@
 name: SmokeTest Build
 
 on:
-  push:
-    branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
+  # Allow it to be called from ci/cd
+  workflow_call:
+    inputs:
+      ref:
+        description: "Branch or commit to test"
+        required: true
+        type: string
 
 jobs:
   dependency-check:

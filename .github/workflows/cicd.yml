@@ -1,15 +1,25 @@
-name: Continuous Integration Build for BP calculator ASP.Net Core app
+name: CI/CD Pipeline
 
 env:
   DOTNET_VERSION: '8.0.x'
   AZURE_WEBAPP_NAME: "sb-csd-bp"
   AZURE_WEBAPP_PACKAGE_PATH: '.'
+# on:
+#   push:
+#     branches: [ "main" ]
+
 on:
-  push:
-    branches: [ "main","sian/iac" ]
+  workflow_run:
+    workflows: ["smoketest"]
+    types:
+      - completed
 
 jobs:
   ci:
+    if: |
+      ${{ github.event.workflow_run.head_branch == 'main' && \
+      github.event.workflow_run.event == 'push' && \
+      github.event.workflow_run.conclusion == 'success' }}
     permissions: write-all
     runs-on: ubuntu-latest
     steps:

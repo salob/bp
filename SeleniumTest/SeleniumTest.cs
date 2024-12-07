@@ -43,8 +43,6 @@ namespace SeleniumTests
         [TestInitialize]                // run before each unit test
         public void Setup()
         {
-            // read URL from selenium.settings
-            //this.webAppUri = testContextInstance.Properties["webAppUri"].ToString();
             //this.webAppUri = "http://localhost:1979";
             this.webAppUri = Environment.GetEnvironmentVariable("WEB_APP_URI");
         }

@@ -6,11 +6,6 @@ on:
       - main
   # Allow it to be called from ci/cd
   workflow_call:
-    inputs:
-      ref:
-        description: "Branch or commit to test"
-        required: true
-        type: string
 
 jobs:
   dependency-check:

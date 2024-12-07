@@ -92,12 +92,12 @@ jobs:
         args: >
           -Dsonar.organization=salob
           -Dsonar.projectKey=salob_bp
-          -Dsonar.exclusions=**/wwwroot/**,**/bin/**,**/obj/**,**/coverage-report/**,**/docs/**,**/PerformanceTests/**
+          -Dsonar.exclusions=**/wwwroot/**,**/bin/**,**/obj/**,**/coverage-report/**,**/docs/**,**/PerformanceTest/**
           -Dsonar.verbose=true
           -Dsonar.cs.opencover.reportsPaths=./BPCalculatorTest/TestResults/**/coverage.opencover.xml
           -Dsonar.cs.vstest.reportsPaths=**.trx
           -Dsonar.sources=./
-          -Dsonar.coverage.exclusions=**/PerformanceTests/**,./BPCalculator/Startup.cs,./BPCalculator/Pages/**,./BPCalculator/Program.cs
+          -Dsonar.coverage.exclusions=**/PerformanceTest/**,./BPCalculator/Startup.cs,./BPCalculator/Pages/**,./BPCalculator/Program.cs
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -174,29 +174,39 @@ jobs:
           docker pull grafana/k6
           pwd
           ls -la
-          docker run -v $GITHUB_WORKSPACE/PerformanceTests:/opt/ -i grafana/k6 run /opt/k6-staging.js
+          docker run -v $GITHUB_WORKSPACE/PerformanceTest:/opt/ -i grafana/k6 run /opt/k6-staging.js
+      
+      # Run Selenium tests
+      - name: Run Selenium tests
+        run: dotnet test SeleniumTest/SeleniumTest.csproj --settings:SeleniumTest/selenium.settings --logger:"trx;LogFileName=selenium.trx"
     
-    blue-green-deployment:
-      runs-on: ubuntu-latest
-      needs: staging-validation
-      steps:
-
-      # Azure login
-      - name: Azure Login action
-        uses: azure/login@v2
+      # Upload results of selenium tests
+      - uses: actions/upload-artifact@v4
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-          enable-AzPSSession: true
+          name: Selenium Tests Results
+          path: SeleniumTest/TestResults/selenium.trx
 
-      # blue/green
-      - name: swap staging and production slots
-        run: |
-          echo "Swapping slots from $SOURCE_SLOT to $TARGET_SLOT"
-          az webapp deployment slot swap \
-            --name $AZURE_WEBAPP_NAME \
-            --resource-group $AZURE_RESOURCE_GROUP \
-            --slot $SOURCE_SLOT \
-            --target-slot $TARGET_SLOT
-        env:
-          SOURCE_SLOT: "staging"
-          TARGET_SLOT: "production"
+  blue-green-deployment:
+    runs-on: ubuntu-latest
+    needs: staging-validation
+    steps:
+
+    # Azure login
+    - name: Azure Login action
+      uses: azure/login@v2
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+        enable-AzPSSession: true
+
+    # blue/green
+    - name: swap staging and production slots
+      run: |
+        echo "Swapping slots from $SOURCE_SLOT to $TARGET_SLOT"
+        az webapp deployment slot swap \
+          --name $AZURE_WEBAPP_NAME \
+          --resource-group $AZURE_RESOURCE_GROUP \
+          --slot $SOURCE_SLOT \
+          --target-slot $TARGET_SLOT
+      env:
+        SOURCE_SLOT: "staging"
+        TARGET_SLOT: "production"

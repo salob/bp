@@ -56,12 +56,12 @@ jobs:
       run: dotnet test BDDTests/BDDTests.csproj --no-restore --configuration Release -l:"trx;LogFileName=BDDTests.trx"
 
     # publish BDD test results to github
-    - name: Publish Unit Test Results
+    - name: Publish Acceptance Test Results
       uses: dorny/test-reporter@v1
       with:
         artifact: ''
         name: MS Tests
-        path: '**BDDTests.trx'
+        path: '**/BDDTests.trx'
         reporter: 'dotnet-trx'
 
     # code coverage

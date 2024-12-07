@@ -20,34 +20,38 @@ Project folder structure with selection of relevant file descriptions
 
 ```
 bp/
-├── .github/                      # GitHub configuration folder
-│   ├── workflows/                # GitHub Actions workflows
-│   │   ├── ci-cd.yml             # CI/CD workflow definition
-│   │   └── smoketest.yml         # Smoke test workflow definition
-├── BPCalculator/                 # Main application code
-│   ├── Pages/                    # Razor Pages for the web app
-│   │   ├── Index.cshtml          # Main page of the application
-│   │   └── Chart.cshtml          # Chart page which contains BP Chart image
-│   ├── wwwroot/                  # Static files (CSS, JS, images, etc.)
-│   ├── BloodPressure.cs          # Main Application Logic
-│   └── TipRepository.cs          # Static repository of health tips
-├── BPCalculatorTest/             # Unit test project
-│   └── BloodPressureTest.cs      # Test class
-│   └── BPCalculatorTest.csproj   # Test project file
-├── Infrastructure/               # Infrastructure as code
-│   ├── template.bicep            # Azure Bicep template for web app
-├── PerformanceTest/              # K6 performance test scripts
-│   └── k6-dev.js                 # Script for local development
-│   └── k6-staging.js             # Script for staging environment
-├── SeleniumTest/                 # Unit test project
-│   └── SeleniumTest.cs           # Test class
-│   └── SeleniumTest.csproj       # Test project file
-├── docs/                         # GitHub Pages website files
-│   ├── code-coverage/            # ReportGenerator Sample Code Coverage report
-│   ├── dependency-check/         # Dependency Check Sample report
-├── README.md                     # Project readme
-├── LICENSE                       # MIT License file
-└── .gitignore                    # Git ignore file
+├── .github/                           # GitHub configuration folder
+│   ├── workflows/                     # GitHub Actions workflows
+│   │   ├── ci-cd.yml                  # CI/CD workflow definition
+│   │   └── smoketest.yml              # Smoke test workflow definition
+├── BPCalculator/                      # Main application code
+│   ├── Pages/                         # Razor Pages for the web app
+│   │   ├── Index.cshtml               # Main page of the application
+│   │   └── Chart.cshtml               # Chart page which contains BP Chart image
+│   ├── wwwroot/                       # Static files (CSS, JS, images, etc.)
+│   ├── BloodPressure.cs               # Main Application Logic
+│   └── TipRepository.cs               # Static repository of health tips
+├── BPCalculatorE2ETest/               # Selenium E2E test project
+│   └── BPCalculatorTest.cs            # Selenium Tesc Class
+│   └── BPCalculatorE2ETest.csproj#    # Selenium Test project file
+├── BPCalculatorBDDTest/               # Cucumber BDD Scenario Test project
+│   └── BPCalculatorBDD.csproj         # BDD Scenario Test project file
+│   └── BloodPressureCategory.feature  # Scenario Tests - User Acceptance Syntax
+│   └── BloodPressureSteps.cs          # Steps or Method for running Scenario Test
+├── BPCalculatorTest/                  # Unit test project
+│   └── BloodPressureTest.cs           # Test class
+│   └── BPCalculatorTest.csproj        # Test project file
+├── Infrastructure/                    # Infrastructure as code
+│   ├── template.bicep                 # Azure Bicep template for web app
+├── PerformanceTest/                   # K6 performance test scripts
+│   └── k6-dev.js                      # Script for local development
+│   └── k6-staging.js                  # Script for staging environment
+├── docs/                              # GitHub Pages website files
+│   ├── code-coverage/                 # ReportGenerator Sample Code Coverage report
+│   ├── dependency-check/              # Dependency Check Sample report
+├── README.md                          # Project readme
+├── LICENSE                            # MIT License file
+└── .gitignore                         # Git ignore file
 ```
 
 ## Getting Started

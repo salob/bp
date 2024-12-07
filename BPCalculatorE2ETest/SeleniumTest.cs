@@ -13,9 +13,9 @@ using System;
 // instance 1 : run web app e.g. on IIS Express
 // instance 2 : from Test Explorer run Selenium test
 // or use the dotnet vstest task
-// e.g. dotnet vstest seleniumtest\bin\debug\netcoreapp2.1\seleniumtest.dll /Settings:seleniumtest.runsettings
+// e.g. dotnet vstest BPCalculatorE2ETest\bin\debug\netcoreapp2.1\BPCalculatorE2ETest.dll /Settings:BPCalculatorE2ETest.runsettings
 
-namespace SeleniumTests
+namespace BPCalculatorE2ETest
 {
     [TestClass]
     public class BloodPressureFormTests

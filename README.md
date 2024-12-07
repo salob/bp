@@ -20,6 +20,10 @@ Project folder structure with selection of relevant file descriptions
 
 ```
 bp/
+├── .github/                      # GitHub configuration folder
+│   ├── workflows/                # GitHub Actions workflows
+│   │   ├── ci-cd.yml             # CI/CD workflow definition
+│   │   └── smoketest.yml         # Smoke test workflow definition
 ├── BPCalculator/                 # Main application code
 │   ├── Pages/                    # Razor Pages for the web app
 │   │   ├── Index.cshtml          # Main page of the application
@@ -28,16 +32,17 @@ bp/
 │   ├── BloodPressure.cs          # Main Application Logic
 │   └── TipRepository.cs          # Static repository of health tips
 ├── BPCalculatorTest/             # Unit test project
+│   └── BloodPressureTest.cs      # Test class
 │   └── BPCalculatorTest.csproj   # Test project file
 ├── Infrastructure/               # Infrastructure as code
 │   ├── template.bicep            # Azure Bicep template for web app
-├── .github/                      # GitHub configuration folder
-│   ├── workflows/                # GitHub Actions workflows
-│   │   ├── ci-cd.yml             # CI/CD workflow definition
-│   │   └── smoketest.yml         # Smoke test workflow definition
 ├── PerformanceTest/             # K6 performance test scripts
 │   └── k6-dev.js                 # Script for local development
 │   └── k6-staging.js             # Script for staging environment
+├── BPCalculatorTest/             # Unit test project
+│   └── SeleniumTest.cs           # Test class
+│   └── SeleniumTest.csproj       # Test project file
+│   └── selenium.settings         # Params for Test Build
 ├── docs/                         # GitHub Pages website files
 │   ├── code-coverage/            # ReportGenerator Sample Code Coverage report
 │   ├── dependency-check/         # Dependency Check Sample report

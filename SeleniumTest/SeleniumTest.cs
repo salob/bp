@@ -55,15 +55,15 @@ namespace SeleniumTests
             String chromeDriverPath = Environment.GetEnvironmentVariable("ChromeWebDriver");
             if (chromeDriverPath is null)
             {
-                chromeDriverPath = ".";                 // for IDE
+                chromeDriverPath = ".";
             }
-          
-            using (IWebDriver driver = new ChromeDriver(chromeDriverPath))
+            
+            ChromeOptions options = new ChromeOptions();
+            options.AddArgument("--headless"); // Run Chrome in headless mode
+            
+            using (IWebDriver driver = new ChromeDriver(chromeDriverPath,options))
             {
-                // any exception below results in a test fail
-
-                // navigate to URI for temperature converter
-                // web app running on IIS express
+                
                 driver.Navigate().GoToUrl(webAppUri);
 
                 // get systolic element

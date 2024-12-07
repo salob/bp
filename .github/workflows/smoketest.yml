@@ -11,10 +11,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # debug trigger
-      - name: Print GitHub Context
-        run: echo "${{ toJson(github) }}"
-
       # Checkout Project
       - name: Checkout Code
         uses: actions/checkout@v3

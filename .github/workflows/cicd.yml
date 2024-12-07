@@ -80,7 +80,7 @@ jobs:
         sed -i -e 's|/home/runner/work/bp/bp|\.|g' ./BPCalculatorTest/TestResults/**/coverage.opencover.xml
 
     - name: Upload opencover xml
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: opencover
         path: ./BPCalculatorTest/TestResults/**/coverage.opencover.xml

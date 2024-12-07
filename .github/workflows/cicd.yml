@@ -127,9 +127,7 @@ jobs:
         az deployment group create \
           --resource-group sb-csd-rg \
           --template-file Infrastructure/template.bicep
-          --parameters @Infrastructure/parameters.json
     
-  
   cd:
     permissions:
       contents: none

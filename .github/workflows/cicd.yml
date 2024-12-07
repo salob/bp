@@ -182,7 +182,7 @@ jobs:
       
       # Run Selenium tests
       - name: Run Selenium tests
-        run: dotnet test SeleniumTest/SeleniumTest.csproj --settings:SeleniumTest/selenium.settings --logger:"trx;LogFileName=selenium.trx"
+        run: dotnet test SeleniumTest/SeleniumTest.csproj --logger:"trx;LogFileName=selenium.trx"
     
       # Upload results of selenium tests
       - uses: actions/upload-artifact@v4

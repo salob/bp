@@ -46,7 +46,7 @@ bp/
 ├── PerformanceTest/                   # K6 performance test scripts
 │   └── k6-dev.js                      # Script for local development
 │   └── k6-staging.js                  # Script for staging environment
-├── docs/                              # GitHub Pages website files (now served via gh-pages branch)
+├── docs/                              # GitHub Pages (served via gh-pages branch)
 │   ├── code-coverage/                 # ReportGenerator Sample Code Coverage report
 │   ├── dependency-check/              # Dependency Check Sample report
 ├── README.md                          # Project readme

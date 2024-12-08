@@ -164,6 +164,7 @@ jobs:
   
   staging-validation:
     runs-on: ubuntu-latest
+    permissions: write-all
     needs: deploy-to-staging
     env:
       WEB_APP_URI: ${{ needs.deploy-to-staging.outputs.webapp-url }}"

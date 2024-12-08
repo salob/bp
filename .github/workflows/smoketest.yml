@@ -8,9 +8,19 @@ on:
   workflow_call:
 
 jobs:
+  compile-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout Project
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      # Compile and Build
+      - name: Compile and Build
+        run: dotnet build
+
   dependency-check:
     runs-on: ubuntu-latest
-
+    needs: compile-and-build
     steps:
       # Checkout Project
       - name: Checkout Code

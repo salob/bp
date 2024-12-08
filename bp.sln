@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BPCalculatorTest", "BPCalcu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BPCalculator", "BPCalculator\BPCalculator.csproj", "{84ABF42A-4E96-4BEF-B4AC-53E138414573}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BPCalculatorE2E", "BPCalculatorE2ETest\BPCalculatorE2E.csproj", "{E1F99173-77B1-4A1D-8DD2-276E438D7DFD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BPCalculatorE2ETest", "BPCalculatorE2ETest\BPCalculatorE2ETest.csproj", "{E1F99173-77B1-4A1D-8DD2-276E438D7DFD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BPCalculatorBDDTest", "BPCalculatorBDDTest\BPCalculatorBDDTest.csproj", "{61F388DC-10FD-4B9A-9284-5102560A0C41}"
 EndProject

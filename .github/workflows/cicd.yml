@@ -41,17 +41,12 @@ jobs:
       # publish unit test results to github
       - name: Publish Unit Test Results
         id: unit-test-report
-        # uses: dorny/test-reporter@v1
-        uses: phoenix-actions/test-reporting@v8
+        uses: dorny/test-reporter@v1
         with:
           artifact: ''
           name: MS Tests
           path: '**.trx'
           reporter: 'dotnet-trx'
-          badge-title: 'unit-tests'
-      - name: Read output variables
-        run: |
-          echo "url is ${{ steps.unit-test-report.outputs.runHtmlUrl }}"
 
       # run acceptance tests
       - name: Run Acceptance Tests
@@ -65,7 +60,6 @@ jobs:
           name: MS Tests
           path: '**/BDDTests.trx'
           reporter: 'dotnet-trx'
-          badge-title: 'acceptance-tests'
 
       # code coverage
       - name: Install Dotnet Code Coverage
@@ -217,7 +211,6 @@ jobs:
           name: MS Tests
           path: '**/selenium.trx'
           reporter: 'dotnet-trx'
-          badge-title: 'e2e-tests'
       
       # Upload Selenium screenshots
       - name: Upload E2E ScreenShots

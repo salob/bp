@@ -182,7 +182,7 @@ jobs:
           ls -la
           docker run -v $GITHUB_WORKSPACE/PerformanceTest:/opt/ -i grafana/k6 run /opt/k6-staging.js
 
-   e2e-tests:
+  e2e-tests:
     runs-on: ubuntu-latest
     permissions: write-all
     needs: deploy-to-staging

@@ -19,87 +19,87 @@ jobs:
     permissions: write-all
     runs-on: ubuntu-latest
     steps:
-    - name: debug logic
-      run: echo "${{ github.event.workflow_run.head_branch == 'main' && github.event.workflow_run.event == 'push' && github.event.workflow_run.conclusion == 'success' }}"
-    # Checkout the project
-    - name: Checkout
-      uses: actions/checkout@v4
+      - name: debug logic
+        run: echo "${{ github.event.workflow_run.head_branch == 'main' && github.event.workflow_run.event == 'push' && github.event.workflow_run.conclusion == 'success' }}"
+      # Checkout the project
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      # Install and Configure Dotnet
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      # build the project
+      - name: Build for Release
+        run: dotnet build --configuration Release
+
+      # run standard unit tests
+      - name: Run unit tests
+        run: dotnet test BPCalculatorTest/BPCalculatorTest.csproj --no-restore --configuration Release --collect:"XPlat Code Coverage" -l:trx -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+
+      # publish unit test results to github
+      - name: Publish Unit Test Results
+        uses: dorny/test-reporter@v1
+        with:
+          artifact: ''
+          name: MS Tests
+          path: '**.trx'
+          reporter: 'dotnet-trx'
+
+      # run acceptance tests
+      - name: Run Acceptance Tests
+        run: dotnet test BPCalculatorBDDTest/BPCalculatorBDDTest.csproj --no-restore --configuration Release -l:"trx;LogFileName=BDDTests.trx"
+
+      # publish BDD test results to github
+      - name: Publish Acceptance Test Results
+        uses: dorny/test-reporter@v1
+        with:
+          artifact: ''
+          name: MS Tests
+          path: '**/BDDTests.trx'
+          reporter: 'dotnet-trx'
+
+      # code coverage
+      - name: Install Dotnet Code Coverage
+        run: |
+          dotnet tool install --global dotnet-coverage
     
-    # Install and Configure Dotnet
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: Install ReportGenerator
+        run: dotnet tool install --global dotnet-reportgenerator-globaltool
+        env:
+        DOTNET_TOOL_ROOT: $HOME/.dotnet/tools
 
-    # build the project
-    - name: Build for Release
-      run: dotnet build --configuration Release
+      - name: Generate HTML Code Test Coverage Report
+        run: |
+          reportgenerator -reports:./BPCalculatorTest/TestResults/**/coverage.opencover.xml -targetdir:coverage-report -reporttypes:Html
 
-    # run standard unit tests
-    - name: Run unit tests
-      run: dotnet test BPCalculatorTest/BPCalculatorTest.csproj --no-restore --configuration Release --collect:"XPlat Code Coverage" -l:trx -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage-report/
 
-    # publish unit test results to github
-    - name: Publish Unit Test Results
-      uses: dorny/test-reporter@v1
-      with:
-        artifact: ''
-        name: MS Tests
-        path: '**.trx'
-        reporter: 'dotnet-trx'
-
-    # run acceptance tests
-    - name: Run Acceptance Tests
-      run: dotnet test BPCalculatorBDDTest/BPCalculatorBDDTest.csproj --no-restore --configuration Release -l:"trx;LogFileName=BDDTests.trx"
-
-    # publish BDD test results to github
-    - name: Publish Acceptance Test Results
-      uses: dorny/test-reporter@v1
-      with:
-        artifact: ''
-        name: MS Tests
-        path: '**/BDDTests.trx'
-        reporter: 'dotnet-trx'
-
-    # code coverage
-    - name: Install Dotnet Code Coverage
-      run: |
-        dotnet tool install --global dotnet-coverage
-  
-    - name: Install ReportGenerator
-      run: dotnet tool install --global dotnet-reportgenerator-globaltool
-      env:
-       DOTNET_TOOL_ROOT: $HOME/.dotnet/tools
-
-    - name: Generate HTML Code Test Coverage Report
-      run: |
-        reportgenerator -reports:./BPCalculatorTest/TestResults/**/coverage.opencover.xml -targetdir:coverage-report -reporttypes:Html
-
-    - name: Upload coverage report
-      uses: actions/upload-artifact@v4
-      with:
-        name: coverage-report
-        path: coverage-report/
-
-    - name: Hack for SonarQube code coverage
-      run: |
-        sed -i -e 's|/home/runner/work/bp/bp|\.|g' ./BPCalculatorTest/TestResults/**/coverage.opencover.xml
-  
-    - name: Analyze code with SonarCloud
-      uses: sonarsource/sonarqube-scan-action@v4.1.0
-      with:
-        args: >
-          -Dsonar.organization=salob
-          -Dsonar.projectKey=salob_bp
-          -Dsonar.exclusions=**/wwwroot/**,**/bin/**,**/obj/**,**/coverage-report/**,**/docs/**,**/PerformanceTest/**
-          -Dsonar.verbose=true
-          -Dsonar.cs.opencover.reportsPaths=./BPCalculatorTest/TestResults/**/coverage.opencover.xml
-          -Dsonar.cs.vstest.reportsPaths=**.trx
-          -Dsonar.sources=./
-          -Dsonar.coverage.exclusions=**/PerformanceTest/**,**/BPCalculator/Startup.cs,**/BPCalculator/Pages/**,**/BPCalculator/Program.cs
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: Hack for SonarQube code coverage
+        run: |
+          sed -i -e 's|/home/runner/work/bp/bp|\.|g' ./BPCalculatorTest/TestResults/**/coverage.opencover.xml
+    
+      - name: Analyze code with SonarCloud
+        uses: sonarsource/sonarqube-scan-action@v4.1.0
+        with:
+          args: >
+            -Dsonar.organization=salob
+            -Dsonar.projectKey=salob_bp
+            -Dsonar.exclusions=**/wwwroot/**,**/bin/**,**/obj/**,**/coverage-report/**,**/docs/**,**/PerformanceTest/**
+            -Dsonar.verbose=true
+            -Dsonar.cs.opencover.reportsPaths=./BPCalculatorTest/TestResults/**/coverage.opencover.xml
+            -Dsonar.cs.vstest.reportsPaths=**.trx
+            -Dsonar.sources=./
+            -Dsonar.coverage.exclusions=**/PerformanceTest/**,**/BPCalculator/Startup.cs,**/BPCalculator/Pages/**,**/BPCalculator/Program.cs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
     # upload built project for CD pipeline
     - name: dotnet publish
@@ -119,23 +119,23 @@ jobs:
       - build-and-test
     steps:
 
-    # Checkout the project
-    - name: Checkout
-      uses: actions/checkout@v4
+      # Checkout the project
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    # IaC - Azure login using service principal and secret
-    - name: Azure Login action
-      uses: azure/login@v2
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
-        enable-AzPSSession: true
-    
-    # IaC - Provision Web App
-    - name: Deploy Bicep file
-      run: |
-        az deployment group create \
-          --resource-group sb-csd-rg \
-          --template-file Infrastructure/template.bicep
+      # IaC - Azure login using service principal and secret
+      - name: Azure Login action
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          enable-AzPSSession: true
+      
+      # IaC - Provision Web App
+      - name: Deploy Bicep file
+        run: |
+          az deployment group create \
+            --resource-group sb-csd-rg \
+            --template-file Infrastructure/template.bicep
     
   deploy-to-staging:
     permissions:

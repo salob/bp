@@ -168,10 +168,15 @@ jobs:
     env:
       WEB_APP_URI: ${{ needs.deploy-to-staging.outputs.webapp-url }}"
     steps:
+      
       # Checkout the project
       - name: Checkout
         uses: actions/checkout@v4
-
+      
+      # build the project (required for selenium)
+      - name: Build for Release
+        run: dotnet build --configuration Release
+      
       # Performance Tests    
       - name: Run K6 Performance Tests
         run: |
@@ -185,7 +190,7 @@ jobs:
         run: dotnet test BPCalculatorE2ETest/BPCalculatorE2ETest.csproj --no-restore --configuration Release -l:"trx;LogFileName=selenium.trx"
     
       # publish Selenium test results to github
-      - name: Publish Acceptance Test Results
+      - name: Publish E2E Test Results
         uses: dorny/test-reporter@v1
         with:
           artifact: ''

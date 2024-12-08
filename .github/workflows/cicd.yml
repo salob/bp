@@ -40,13 +40,18 @@ jobs:
 
       # publish unit test results to github
       - name: Publish Unit Test Results
-        uses: dorny/test-reporter@v1
+        id: unit-test-report
+        # uses: dorny/test-reporter@v1
+        uses: phoenix-actions/test-reporting@v8
         with:
           artifact: ''
           name: MS Tests
           path: '**.trx'
           reporter: 'dotnet-trx'
           badge-title: 'unit-tests'
+      - name: Read output variables
+        run: |
+          echo "url is ${{ steps.unit-test-report.outputs.runHtmlUrl }}"
 
       # run acceptance tests
       - name: Run Acceptance Tests

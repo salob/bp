@@ -8,7 +8,7 @@ on:
   workflow_call:
 
 jobs:
-  smoketest:
+  dependency-check:
     runs-on: ubuntu-latest
     steps:
       # Checkout Project

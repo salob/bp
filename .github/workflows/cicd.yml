@@ -236,7 +236,6 @@ jobs:
       # Upload zap pen test report
       - name: upload ZAP report
         uses: actions/upload-artifact@v4
-        name: upload ZAP report
         with:
           name: ZAPreport
           path: /report/zapreport.html

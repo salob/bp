@@ -8,7 +8,7 @@ on:
   workflow_call:
 
 jobs:
-  compile-and-build:
+  smoketest:
     runs-on: ubuntu-latest
     steps:
       # Checkout Project
@@ -17,15 +17,6 @@ jobs:
       # Compile and Build
       - name: Compile and Build
         run: dotnet build
-
-  dependency-check:
-    runs-on: ubuntu-latest
-    needs: compile-and-build
-    steps:
-      # Checkout Project
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
       # Run OWASP Dependency-Check
       - name: Run OWASP Dependency Check
         uses: dependency-check/Dependency-Check_Action@main
@@ -35,7 +26,7 @@ jobs:
           format: HTML
           out: reports
           args: --failOn CVSS:8
-
+      # Upload dependency check report
       - name: Upload Dependency-Check Report
         uses: actions/upload-artifact@v3
         with:

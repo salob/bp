@@ -13,7 +13,7 @@ on:
 jobs:
   smoketest:
     uses: ./.github/workflows/smoketest.yml
-
+    
   build-and-test:
     permissions: write-all
     runs-on: ubuntu-latest

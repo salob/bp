@@ -69,11 +69,13 @@ namespace BPCalculatorE2ETest
                 // get systolic element
                 IWebElement systolic = driver.FindElement(By.Id("BP_Systolic"));
                 // enter 120 in element
+                systolic.Clear(); //need to remove default systolic first
                 systolic.SendKeys("120");
 
                 // get diastolic element
                 IWebElement diastolic = driver.FindElement(By.Id("BP_Diastolic"));
                 // enter 80 in element
+                diastolic.Clear(); //need to remove default diastolic first
                 diastolic.SendKeys("80");
 
                 // submit the form
@@ -91,7 +93,7 @@ namespace BPCalculatorE2ETest
 
                 String bpcategory = BPCategoryValue.Text.ToString();
 
-                StringAssert.Equals(bpcategory, "Pre-High Blood Pressure");
+                Assert.AreEqual("Pre-High Blood Pressure", bpcategory);
                 
                 driver.Quit();
 

@@ -192,6 +192,13 @@ jobs:
           name: MS Tests
           path: '**/selenium.trx'
           reporter: 'dotnet-trx'
+      
+      # Upload Selenium screenshots
+      - name: Upload E2E ScreenShots
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-screenshots
+          path: ./BPCalculatorE2ETest/TestResults/*.png
 
   blue-green-deployment:
     runs-on: ubuntu-latest

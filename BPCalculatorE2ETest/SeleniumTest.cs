@@ -82,6 +82,12 @@ namespace BPCalculatorE2ETest
                 IWebElement BPCategoryValue = new WebDriverWait(driver, TimeSpan.FromSeconds(10))
                     .Until(c => c.FindElement(By.Id("bpcategory")));
 
+                // Take a screenshot
+                Screenshot screenshot = ((ITakesScreenshot)driver).GetScreenshot();
+
+                // Save the screenshot to a file
+                screenshot.SaveAsFile("../../../TestResults/screenshot.png");
+
                 String bpcategory = BPCategoryValue.Text.ToString();
 
                 StringAssert.Equals(bpcategory, "Pre-High Blood Pressure");

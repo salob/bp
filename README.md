@@ -1,4 +1,4 @@
-# Blood Pressure Calculator Web Application
+# BP Calculator Web Application
 
 [![CI/CD Pipeline](https://github.com/salob/bp/actions/workflows/cicd.yml/badge.svg)](https://github.com/salob/bp/actions/workflows/cicd.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=salob_bp&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=salob_bp)

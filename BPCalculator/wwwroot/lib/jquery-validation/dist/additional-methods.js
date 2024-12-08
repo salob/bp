@@ -1,5 +1,5 @@
 /*!
- * jQuery Validation Plugin v1.19.3
+ * jQuery Validation Plugin v1.19.5
  *
  * https://jqueryvalidation.org/
  *

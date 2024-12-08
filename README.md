@@ -46,7 +46,7 @@ bp/
 ├── PerformanceTest/                   # K6 performance test scripts
 │   └── k6-dev.js                      # Script for local development
 │   └── k6-staging.js                  # Script for staging environment
-├── docs/                              # GitHub Pages website files (now served via gh-pages branch)
+├── docs/                              # GitHub Pages (served via gh-pages branch)
 │   ├── code-coverage/                 # ReportGenerator Sample Code Coverage report
 │   ├── dependency-check/              # Dependency Check Sample report
 ├── README.md                          # Project readme
@@ -91,11 +91,11 @@ Access the application in your browser at `https://localhost:1979`.
 
 ## Running Tests
 
-This project includes unit tests to ensure the accuracy of blood pressure calculations.
-
+This project includes MSTest and Specflow framework tests. The e2e tests use selenium which requires an application URI.
 Run the tests using the following command:
 
 ```bash
+export WEB_APP_URI=https://sb-csd-bp-staging.azurewebsites.net/
 dotnet test
 ```
 

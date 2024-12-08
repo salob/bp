@@ -189,7 +189,7 @@ resource sites_sb_csd_bp_name_staging 'Microsoft.Web/sites/slots@2023-12-01' = {
       numberOfWorkers: 1
       acrUseManagedIdentityCreds: false
       alwaysOn: false
-      http20Enabled: true
+      http20Enabled: false
       functionAppScaleLimit: 0
       minimumElasticInstanceCount: 0
     }
@@ -300,7 +300,7 @@ resource sites_sb_csd_bp_name_staging_web 'Microsoft.Web/sites/slots/config@2023
       }
     ]
     scmIpSecurityRestrictionsUseMain: false
-    http20Enabled: true
+    http20Enabled: false
     minTlsVersion: '1.2'
     scmMinTlsVersion: '1.2'
     ftpsState: 'FtpsOnly'

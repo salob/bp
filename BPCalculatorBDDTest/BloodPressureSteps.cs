@@ -26,13 +26,11 @@ public class BloodPressureSteps
     [When(@"I press Submit")]
     public void WhenIPressSubmit()
     {
-
-        BloodPressure bp = new BloodPressure();
-        bp.Systolic = systolic;
-        bp.Diastolic = diastolic;
         try
         {
-            category = bp.Category.ToString(); // Use the enum extension method
+            BloodPressure bp = new BloodPressure() { Systolic = systolic, Diastolic = diastolic };
+            ValidateInstance(bp);
+            category = bp.Category.ToString();
         }
         catch (ValidationException)
         {
@@ -44,5 +42,12 @@ public class BloodPressureSteps
     public void ThenTheResultShouldBe(string expectedCategory)
     {
         Assert.AreEqual(expectedCategory, category);
+    }
+
+    
+    private static void ValidateInstance(BloodPressure bloodPressure)
+    {
+        ValidationContext context = new ValidationContext(bloodPressure);
+        Validator.ValidateObject(bloodPressure, context, true);
     }
 }

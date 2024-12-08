@@ -15,8 +15,14 @@ Feature: Blood Pressure Category Calculation
     When I press Submit
     Then the result should be "Low"
 
+  Scenario: Calculate category for high values
+    Given I have entered 130 as the systolic value
+    And I have entered 90 as the diastolic value
+    When I press Submit
+    Then the result should be "High"
+
   Scenario: Calculate category for invalid values
-    Given I have entered 20 as the systolic value
-    And I have entered 10 as the diastolic value
+    Given I have entered 200 as the systolic value
+    And I have entered 90 as the diastolic value
     When I press Submit
     Then the result should be "Invalid"

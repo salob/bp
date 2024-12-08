@@ -251,6 +251,10 @@ jobs:
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-production.outputs.webapp-url }}    
+    concurrency:
+      group: production-deployments
+      cancel-in-progress: true
+
     steps:
 
     # Azure login

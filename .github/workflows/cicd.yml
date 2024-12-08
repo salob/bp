@@ -59,7 +59,7 @@ jobs:
       with:
         artifact: ''
         name: MS Tests
-        path: '**/BPCalculatorBDDTest.trx'
+        path: '**/BDDTests.trx'
         reporter: 'dotnet-trx'
 
     # code coverage
@@ -184,11 +184,14 @@ jobs:
       - name: Run Selenium tests
         run: dotnet test BPCalculatorE2ETest/BPCalculatorE2ETest.csproj --no-restore --configuration Release -l:"trx;LogFileName=selenium.trx"
     
-      # Upload results of selenium tests
-      - uses: actions/upload-artifact@v4
+      # publish Selenium test results to github
+      - name: Publish Acceptance Test Results
+        uses: dorny/test-reporter@v1
         with:
-          name: Selenium Tests Results
-          path: BPCalculatorE2ETest/TestResults/selenium.trx
+          artifact: ''
+          name: MS Tests
+          path: '**/selenium.trx'
+          reporter: 'dotnet-trx'
 
   blue-green-deployment:
     runs-on: ubuntu-latest

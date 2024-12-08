@@ -82,7 +82,6 @@ namespace BPCalculatorE2ETest
                 IWebElement BPCategoryValue = new WebDriverWait(driver, TimeSpan.FromSeconds(10))
                     .Until(c => c.FindElement(By.Id("bpcategory")));
 
-                // item comes back like "BMIValue: 24.96"
                 String bpcategory = BPCategoryValue.Text.ToString();
 
                 StringAssert.Equals(bpcategory, "Pre-High Blood Pressure");

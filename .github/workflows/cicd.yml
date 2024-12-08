@@ -44,7 +44,7 @@ jobs:
         uses: dorny/test-reporter@v1
         with:
           artifact: ''
-          name: MS Tests
+          name: Unit-Tests
           path: '**.trx'
           reporter: 'dotnet-trx'
 
@@ -57,7 +57,7 @@ jobs:
         uses: dorny/test-reporter@v1
         with:
           artifact: ''
-          name: MS Tests
+          name: Acceptance-Tests
           path: '**/BDDTests.trx'
           reporter: 'dotnet-trx'
 
@@ -208,7 +208,7 @@ jobs:
         uses: dorny/test-reporter@v1
         with:
           artifact: ''
-          name: MS Tests
+          name: E2E-Tests
           path: '**/selenium.trx'
           reporter: 'dotnet-trx'
       

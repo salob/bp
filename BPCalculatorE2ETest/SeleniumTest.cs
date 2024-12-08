@@ -44,7 +44,8 @@ namespace BPCalculatorE2ETest
         public void Setup()
         {
             //this.webAppUri = "http://localhost:1979";
-            this.webAppUri = Environment.GetEnvironmentVariable("WEB_APP_URI");
+            //this.webAppUri = Environment.GetEnvironmentVariable("WEB_APP_URI");
+            this.webAppUri = "http://sb-csd-bp-staging.azurewebsites.net";
         }
 
         [TestMethod]

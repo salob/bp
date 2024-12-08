@@ -2,13 +2,13 @@
 # pull docker image
 # run baseline scan on URI and store test result file via volume mounted on container
 
-name: ZAP BMI
+name: ZAP BP
 
 env:
   URI: https://sb-csd-bp-staging.azurewebsites.net/         
   
 on:
-  workflow_dispatch:                  # manually triggered
+  workflow_dispatch: # manually triggered
 
 jobs:
 

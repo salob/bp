@@ -91,11 +91,11 @@ Access the application in your browser at `https://localhost:1979`.
 
 ## Running Tests
 
-This project includes unit tests to ensure the accuracy of blood pressure calculations.
-
+This project includes MSTest and Specflow framework tests. The e2e tests use selenium which requires an application URI.
 Run the tests using the following command:
 
 ```bash
+export WEB_APP_URI=https://sb-csd-bp-staging.azurewebsites.net/
 dotnet test
 ```
 

@@ -202,7 +202,7 @@ resource sites_sb_csd_bp_name_staging 'Microsoft.Web/sites/slots@2023-12-01' = {
     customDomainVerificationId: '501588C518514574C3C6579341C8A95F27BC42DAF0B1B759187708F07C4DD5C5'
     containerSize: 0
     dailyMemoryTimeQuota: 0
-    httpsOnly: false
+    httpsOnly: true
     redundancyMode: 'None'
     publicNetworkAccess: 'Enabled'
     storageAccountRequired: false

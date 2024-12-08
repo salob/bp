@@ -1,6 +1,6 @@
 # Blood Pressure Calculator Web Application
 
-![example workflow](https://github.com/salob/bp/actions/workflows/cicd.yml/badge.svg)
+[![CI/CD Pipeline](https://github.com/salob/bp/actions/workflows/cicd.yml/badge.svg)](https://github.com/salob/bp/actions/workflows/cicd.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=salob_bp&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=salob_bp)
 
 This repository contains a web application for calculating a blood pressure category. The project is built using ASP.NET Core Razor Pages and aims to provide a user-friendly interface for individuals wishing to submit their systolic and diastolic measurments in order to retrieve their blood pressure category along with a useful tip.

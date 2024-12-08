@@ -51,7 +51,7 @@ jobs:
 
     # run acceptance tests
     - name: Run Acceptance Tests
-      run: dotnet test BPCalculatorBDDTest/BPCalculatorBDDTest.csproj --no-restore --configuration Release -l:"trx;LogFileName=BPCalculatorBDDTest.trx"
+      run: dotnet test BPCalculatorBDDTest/BPCalculatorBDDTest.csproj --no-restore --configuration Release -l:"trx;LogFileName=BDDTests.trx"
 
     # publish BDD test results to github
     - name: Publish Acceptance Test Results

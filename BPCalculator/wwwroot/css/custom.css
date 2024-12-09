@@ -21,7 +21,7 @@ body{
 }
 
 .preHigh {
-  background-color: #f50;
+  background-color: #a08112;
   color: #fff;
   font-weight: bold;
   text-align: center;  
@@ -35,7 +35,7 @@ body{
 }
 
 .low {
-  background-color: rgb(91, 131, 233);
+  background-color: rgb(128, 0, 128);
   color: #fff;
   font-weight: bold;
   text-align: center;
